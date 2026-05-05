@@ -21,7 +21,7 @@ EXPECTED_LOGPROBS = mlx.core.array(EXPECTED_LOGPROBS_ARR)
 EXPECTED_PPL = 10
 
 
-def test_run_reference(tmp_path):
+def test_run_reference():
     # vocab_size=10: uniform probability = 1/10
     # dims=4: toy model
     model = utils.UniformLogitModel(vocab_size=10, dims=4)
@@ -30,19 +30,15 @@ def test_run_reference(tmp_path):
     prompt_text = "a b c d"
     max_tokens = 4
 
-    source_prompt_file = tmp_path / "prompt.txt"
-    source_prompt_path = str(source_prompt_file)
-
-    source_prompt_file.write_text(prompt_text)
-
     with unittest.mock.patch("mlx_eval.reference.mlx_lm.load") as mock_load:
-        mock_load.return_value = (model, tokenizer, {"max_position_embeddings": 1000})
+        mock_load.return_value = (model, tokenizer)
+
         result = mlx_eval.reference.run_reference(
             ref_model_path="dummy",
+            prompt_text=prompt_text,
             max_tokens=max_tokens,
-            source_prompt_path=source_prompt_path,
         )
 
     assert result["prompt"].tolist() == EXPECTED_PROMPT
     assert mlx.core.allclose(result["log_probs"], EXPECTED_LOGPROBS, atol=1e-6)
-    assert result["perplexity"].item() == pytest.approx(EXPECTED_PPL, abs=1e-6)
+    assert result["ppl_mean"] == pytest.approx(EXPECTED_PPL, abs=1e-6)

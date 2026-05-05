@@ -9,7 +9,7 @@ import mlx_lm
 from . import const
 
 
-def run_reference(ref_model_path, max_tokens, source_prompt_path):
+def run_reference(ref_model_path, prompt_text, max_tokens):
     """
     Run a reference model on the prompt and return log-probabilities,
     tokenized prompt, and reference perplexity as an MLX array.
@@ -32,7 +32,7 @@ def run_reference(ref_model_path, max_tokens, source_prompt_path):
         raise ValueError(f"max_tokens {max_tokens} > model max context {ref_model_context}")
 
     print("Loading prompt...")
-    prompt_text = pathlib.Path(source_prompt_path).read_text(encoding="utf-8")
+    prompt_text = pathlib.Path(const.PROMPT_PATH).read_text(encoding="utf-8")
 
     # tokenize prompt and truncate to max_tokens with no padding
     token_ids = ref_tokenizer.encode(prompt_text, truncation=True, max_length=max_tokens)
@@ -46,29 +46,35 @@ def run_reference(ref_model_path, max_tokens, source_prompt_path):
 
     print("Calculating log-probabilities...")
     # raw logits per token from forward pass over vocabulary (batch_size, max_tokens, vocab_size)
-    ref_logits = ref_model(prompt)
+    logits = ref_model(prompt)
 
     del ref_model
     gc.collect()
     mlx.core.clear_cache()
 
     # convert logits to numerically stable log-probabilities along the vocabulary axis
-    ref_log_probs = mlx.nn.log_softmax(ref_logits, axis=-1)
+    log_probs = mlx.nn.log_softmax(logits, axis=-1)
 
     print("Calculating perplexity...")
     # drop last token because there is no "next token" to predict
-    shift_logits = ref_logits[:, :-1, :]
+    shift_logits = logits[:, :-1, :]
     # drop first token because there is no previous token to use as context for prediction
     shift_prompt = prompt[:, 1:]
     # cross-entropy loss between the predicted logits and target tokens
     cross_entropy = mlx.nn.losses.cross_entropy(shift_logits, shift_prompt, reduction="mean")
     # convert cross-entropy to perplexity
-    ref_ppl = mlx.core.exp(cross_entropy).item()
+    ppl_mean = mlx.core.exp(cross_entropy).item()
+
+    print("Calculating top-1 accuracy...")
+    # top-1 accuracy: fraction of tokens where the predicted token matches the true next token
+    top1_preds = mlx.core.argmax(shift_logits, axis=-1)
+    top1_acc = mlx.core.mean(top1_preds == shift_prompt).item()
 
     return {
-        "log_probs": ref_log_probs,
         "prompt": prompt,
-        "perplexity": mlx.core.array(ref_ppl),
+        "log_probs": log_probs,
+        "ppl_mean": ppl_mean,
+        "top1_acc": top1_acc,
     }
 
 
@@ -80,18 +86,22 @@ def main():
     ref_model_path = sys.argv[1]
     max_tokens = int(sys.argv[2])
 
-    result = run_reference(
-        ref_model_path=ref_model_path,
-        max_tokens=max_tokens,
-        source_prompt_path=const.SOURCE_PROMPT_PATH,
+    print("Loading prompt...")
+    prompt_text = pathlib.Path(const.PROMPT_PATH).read_text(encoding="utf-8")
+
+    result = run_reference(ref_model_path, prompt_text, max_tokens)
+
+    print("Saving outputs...")
+    mlx.core.savez(
+        const.OUTPUTS_PATH,
+        prompt=result["prompt"],
+        log_probs=result["log_probs"],
+        ppl_mean=mlx.core.array(result["ppl_mean"]),
+        top1_acc=mlx.core.array(result["top1_acc"]),
     )
 
-    print("Saving artifacts...")
-    mlx.core.save(const.REF_LOG_PROBS_PATH, result["log_probs"])
-    mlx.core.save(const.TOKENIZED_PROMPT_PATH, result["prompt"])
-    mlx.core.save(const.REF_PERPLEXITY_PATH, result["perplexity"])
-
-    print(f"\nPPL mean: {result["perplexity"].item():.6f}")
+    print(f"\nPPL mean: {result["ppl_mean"]:.6f}")
+    print(f"Top-1 accuracy: {result["top1_acc"]:.6f}")
 
 
 if __name__ == "__main__":
