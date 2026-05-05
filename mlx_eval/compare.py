@@ -23,9 +23,11 @@ def run_compare(
 
     mlx.core.clear_cache()
 
-    print("Loading target model...")
-    target_model, _ = mlx_lm.load(target_model_path)
-    target_memory = mlx.core.get_active_memory()
+    print("Loading model...")
+    memory_before = mlx.core.get_active_memory()
+    target_model = mlx_lm.load(target_model_path)[0]
+    memory_after = mlx.core.get_active_memory()
+    target_memory = memory_after - memory_before
 
     print("Calculating log-probabilities...")
     # raw logits per token from forward pass over vocabulary (batch_size, max_tokens, vocab_size)
