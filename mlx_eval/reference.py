@@ -17,22 +17,8 @@ def run_reference(ref_model_path, prompt_text, max_tokens):
 
     mlx.core.clear_cache()
 
-    print("Loading reference model...")
-    ref_model, ref_tokenizer, ref_config = mlx_lm.load(ref_model_path, return_config=True)
-    ref_model_context = ref_config.get("max_position_embeddings")
-
-    if ref_model_context is None:
-        text_config = ref_config.get("text_config", {})
-        ref_model_context = text_config.get("max_position_embeddings")
-
-    if ref_model_context is None:
-        raise ValueError("Could not determine model maximum context length")
-
-    if max_tokens > ref_model_context:
-        raise ValueError(f"max_tokens {max_tokens} > model max context {ref_model_context}")
-
-    print("Loading prompt...")
-    prompt_text = pathlib.Path(const.PROMPT_PATH).read_text(encoding="utf-8")
+    print("Loading model...")
+    ref_model, ref_tokenizer = mlx_lm.load(ref_model_path)
 
     # tokenize prompt and truncate to max_tokens with no padding
     token_ids = ref_tokenizer.encode(prompt_text, truncation=True, max_length=max_tokens)
