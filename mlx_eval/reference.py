@@ -34,7 +34,10 @@ def run_reference(ref_model_path, prompt_text, max_tokens):
     # raw logits per token from forward pass over vocabulary (batch_size, max_tokens, vocab_size)
     logits = ref_model(prompt)
 
-    del ref_model
+    # materialise logits, break giant lazy graph
+    mlx.core.eval(logits)
+    # cleanup
+    del ref_model, ref_tokenizer
     gc.collect()
     mlx.core.clear_cache()
 

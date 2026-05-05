@@ -33,6 +33,9 @@ def run_compare(
     # raw logits per token from forward pass over vocabulary (batch_size, max_tokens, vocab_size)
     logits = target_model(prompt)
 
+    # materialise logits, break giant lazy graph
+    mlx.core.eval(logits)
+    # cleanup
     del target_model
     gc.collect()
     mlx.core.clear_cache()
