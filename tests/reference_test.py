@@ -25,18 +25,14 @@ def test_run_reference():
     # vocab_size=10: uniform probability = 1/10
     # dims=4: toy model
     model = utils.UniformLogitModel(vocab_size=10, dims=4)
-    tokenizer = utils.FixedTokenizer()
+    token_ids = [0, 1, 2, 3]
 
-    prompt_text = "a b c d"
-    max_tokens = 4
-
-    with unittest.mock.patch("mlx_eval.reference.mlx_lm.load") as mock_load:
-        mock_load.return_value = (model, tokenizer)
+    with unittest.mock.patch("mlx_eval.reference.mlx_lm.utils.load_model") as mock_load_model:
+        mock_load_model.return_value = [model]
 
         result = mlx_eval.reference.run_reference(
             ref_model_path="dummy",
-            prompt_text=prompt_text,
-            max_tokens=max_tokens,
+            token_ids=token_ids,
         )
 
     assert result["prompt"].tolist() == EXPECTED_PROMPT

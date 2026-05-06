@@ -90,7 +90,9 @@ ignore = [
   # too-many-arguments
   "PLR0913",
   # too-many-locals
-  "PLR0914"
+  "PLR0914",
+  # too-many-statements
+  "PLR0915"
 ]
 unfixable = [
   # unused-import

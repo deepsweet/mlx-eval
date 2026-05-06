@@ -36,15 +36,15 @@ mlx_vlm.convert \
 curl -L "https://huggingface.co/AesSedai/GLM-4.5-GGUF/raw/main/combined_all_micro.txt" > prompt.txt
 
 # load, calculate and save reference model log-probabilities
-# mlx_eval.reference <reference_model_path> <max_tokens>
-uv run mlx_eval.reference /path/to/Qwen3.6-35B-A3B-MLX 16384
+# mlx_eval.reference <reference_model_path> <window_count> <max_tokens>
+uv run mlx_eval.reference /path/to/Qwen3.6-35B-A3B-MLX 8 16384
 
 # compare a target quantized model against it
-# mlx_eval.compare <target_model_path>
-uv run mlx_eval.compare /path/to/Qwen3.6-35B-A3B-MLX-oQ8
+# mlx_eval.compare <target_model_path> <window_count>
+uv run mlx_eval.compare /path/to/Qwen3.6-35B-A3B-MLX-oQ8 8
 
 # cleanup when finished
-rm outputs.npz
+rm outputs-*.npz
 ```
 
 ## Generate chart
