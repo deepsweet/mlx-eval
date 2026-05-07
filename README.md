@@ -4,7 +4,7 @@ Utilities to evaluate KL divergence and perplexity of MLX quantizations.
 
 See [detailed results](./results) for more information:
 
-![Qwen3.6-35B-A3B KLD/RAM chart](./results/Qwen3.6-35B-A3B.svg?20250430)
+![Qwen3.6-35B-A3B KLD/RAM chart](./results/Qwen3.6-35B-A3B.svg)
 
 ## Usage
 
