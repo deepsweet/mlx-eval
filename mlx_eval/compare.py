@@ -23,20 +23,17 @@ def run_compare(
 
     mlx.core.clear_cache()
 
-    print("Loading model...")
     memory_before = mlx.core.get_active_memory()
     model = mlx_lm.utils.load_model(target_model_path)[0]
     memory_after = mlx.core.get_active_memory()
     memory = memory_after - memory_before
 
-    print("Calculating log-probabilities...")
     # raw logits per token from forward pass over vocabulary (batch_size, max_tokens, vocab_size)
     logits = model(prompt)
 
     # materialise logits, break giant lazy graph
     mlx.core.eval(logits)
 
-    print("Unloading model...")
     # cleanup
     del model
     gc.collect()
@@ -45,7 +42,6 @@ def run_compare(
     # convert logits to numerically stable log-probabilities along the vocabulary axis
     log_probs = mlx.nn.log_softmax(logits, axis=-1)
 
-    print("Calculating KL divergence...")
     # per-token KL Divergence summed over vocabulary (batch_size, max_tokens)
     kld_none = mlx.nn.losses.kl_div_loss(log_probs, ref_log_probs, reduction="none")
     kld_mean = mlx.core.mean(kld_none).item()
@@ -53,7 +49,6 @@ def run_compare(
     kld_p95 = statistics.quantiles(kld_list, n=100)[-5]
     kld_p99 = statistics.quantiles(kld_list, n=100)[-1]
 
-    print("Calculating perplexity...")
     # drop last token because there is no "next token" to predict
     shift_logits = logits[:, :-1, :]
     # drop first token because there is no previous token to use as context for prediction
@@ -64,7 +59,6 @@ def run_compare(
     ppl_mean = mlx.core.exp(cross_entropy).item()
     ppl_delta = ppl_mean - ref_ppl_mean
 
-    print("Calculating top-1 accuracy...")
     # top-1 accuracy: fraction of tokens where the predicted token matches the true next token
     top1_preds = mlx.core.argmax(shift_logits, axis=-1)
     top1_acc = mlx.core.mean(top1_preds == shift_prompt).item()
@@ -99,10 +93,7 @@ def main():
     all_kld = []
 
     for i in range(window_count):
-        if i > 0:
-            print()
-
-        print(f"Processing window {i + 1}/{window_count}")
+        print(f"\nProcessing window {i + 1}/{window_count}")
 
         ref_data = mlx.core.load(f"outputs-{i:02d}.npz")
         prompt = ref_data["prompt"]
@@ -131,11 +122,11 @@ def main():
         # collect every per-token KLD value from this window for exact overall percentiles
         all_kld.extend(result["kld_list"])
 
-        print(f"KLD mean: {result['kld_mean']:.6f}")
-        print(f"PPL mean: {result['ppl_mean']:.6f}")
-        print(f"PPL delta: {result['ppl_delta']:.6f}")
-        print(f"Top-1 accuracy: {result['top1_acc']:.6f}")
-        print(f"Top-1 accuracy delta: {result['top1_delta']:.6f}")
+        print(f"KLD: {result['kld_mean']:.6f}")
+        print(f"PPL: {result['ppl_mean']:.6f}")
+        print(f"Δ PPL: {result['ppl_delta']:+.6f}")
+        print(f"Acc@1: {result['top1_acc']:.6f}")
+        print(f"Δ Acc@1: {result['top1_delta']:+.6f}")
 
         if i == 0:
             memory_gib = result["memory"] / (1024**3)
@@ -160,13 +151,13 @@ def main():
     ppl_delta = overall_ppl - ref_ppl_overall
     top1_delta = overall_top1 - ref_top1_overall
 
-    print(f"\nKLD mean: {overall_kld_mean:.6f}")
+    print(f"\nKLD: {overall_kld_mean:.6f}")
     print(f"KLD p95: {overall_kld_p95:.6f}")
     print(f"KLD p99: {overall_kld_p99:.6f}")
-    print(f"PPL mean: {overall_ppl:.6f}")
-    print(f"PPL delta: {ppl_delta:+.6f}")
-    print(f"Top-1 accuracy: {overall_top1:.6f}")
-    print(f"Top-1 delta: {top1_delta:+.6f}")
+    print(f"PPL: {overall_ppl:.6f}")
+    print(f"Δ PPL: {ppl_delta:+.6f}")
+    print(f"Acc@1: {overall_top1:.6f}")
+    print(f"Δ Acc@1: {top1_delta:+.6f}")
     print(f"RAM: {memory_gib:.2f}")
 
 
