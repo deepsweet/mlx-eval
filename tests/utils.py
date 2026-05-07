@@ -58,10 +58,3 @@ class PositionDependentModel(mlx.nn.Module):
         logits = self.bias_matrix[token_ids]
         # add batch dimension back (1, seq_len, vocab_size)
         return logits[None, :, :]
-
-
-# deterministic tokenizer that ignores the input text and returns a fixed repeating sequence
-class FixedTokenizer:
-    @staticmethod
-    def encode(text, truncation=True, max_length=None):  # noqa: ARG004
-        return ([0, 1, 2, 3] * (max_length // 4 + 1))[:max_length]

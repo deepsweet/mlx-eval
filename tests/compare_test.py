@@ -34,10 +34,9 @@ EXPECTED_VARYING_PPL_DELTA = 0.020231246948242188
 
 def test_run_compare_self():
     model = utils.UniformLogitModel(vocab_size=10, dims=4)
-    tokenizer = utils.FixedTokenizer()
 
-    with unittest.mock.patch("mlx_eval.compare.mlx_lm.load") as mock_load:
-        mock_load.return_value = (model, tokenizer)
+    with unittest.mock.patch("mlx_eval.compare.mlx_lm.utils.load_model") as mock_load_model:
+        mock_load_model.return_value = [model]
 
         result = mlx_eval.compare.run_compare(
             target_model_path="dummy",
@@ -57,10 +56,9 @@ def test_run_compare_self():
 
 def test_run_compare_varying_perturbation():
     target_model = utils.PositionDependentModel(vocab_size=10, dims=4, base_perturbation=0.01)
-    tokenizer = utils.FixedTokenizer()
 
-    with unittest.mock.patch("mlx_eval.compare.mlx_lm.load") as mock_load:
-        mock_load.return_value = (target_model, tokenizer)
+    with unittest.mock.patch("mlx_eval.compare.mlx_lm.utils.load_model") as mock_load_model:
+        mock_load_model.return_value = [target_model]
 
         result = mlx_eval.compare.run_compare(
             target_model_path="dummy",
