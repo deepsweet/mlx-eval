@@ -32,7 +32,7 @@ Top‑1 accuracy (Acc@1) measures how often the most probable token matches the 
 The value is unitless. Higher Acc@1 indicates higher hard‑decision accuracy, perfect value is 1. Acc@1 of 0.5 means the top prediction matches the true next token 50% of the time.
 
 - `Acc@1` – mean accuracy
-- `Δ Acc@1` – delta in mean accuracy, occasional positive values are typically within measurement noise and do not indicate a genuine improvement.
+- `Δ Acc@1` – delta in mean accuracy, occasional positive values are typically within measurement noise and do not indicate a genuine improvement
 
 ### Further readings
 
