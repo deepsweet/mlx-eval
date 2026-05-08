@@ -5,75 +5,48 @@ import statistics
 import sys
 
 import mlx.core
-import mlx.nn
 import mlx_lm
+
+from . import utils
 
 
 def run_compare(
-    target_model_path,
+    model,
     prompt,
     ref_log_probs,
     ref_ppl_mean,
     ref_top1_acc,
 ):
     """
-    Run a target model comparison using reference log-probabilities and tokenized prompt,
-    and return KL divergence metrics, perplexity, and memory usage.
+    Run a target model comparison using reference log-probabilities,
+    and return KL divergence, perplexity, and top-1 accuracy metrics.
     """
 
-    mlx.core.clear_cache()
+    result = utils.run_model(model, prompt)
+    log_probs = result["log_probs"]
 
-    memory_before = mlx.core.get_active_memory()
-    model = mlx_lm.utils.load_model(target_model_path)[0]
-    memory_after = mlx.core.get_active_memory()
-    memory = memory_after - memory_before
-
-    # raw logits per token from forward pass over vocabulary (batch_size, max_tokens, vocab_size)
-    logits = model(prompt)
-
-    # materialise logits, break giant lazy graph
-    mlx.core.eval(logits)
-
-    # cleanup
-    del model
-    gc.collect()
-    mlx.core.clear_cache()
-
-    # convert logits to numerically stable log-probabilities along the vocabulary axis
-    log_probs = mlx.nn.log_softmax(logits, axis=-1)
-
-    # per-token KL Divergence summed over vocabulary (batch_size, max_tokens)
+    # per-token KL divergence summed over vocabulary (batch_size, max_tokens)
     kld_none = mlx.nn.losses.kl_div_loss(log_probs, ref_log_probs, reduction="none")
     kld_mean = mlx.core.mean(kld_none).item()
     kld_list = kld_none.flatten().tolist()
     kld_p95 = statistics.quantiles(kld_list, n=100)[-5]
     kld_p99 = statistics.quantiles(kld_list, n=100)[-1]
 
-    # drop last token because there is no "next token" to predict
-    shift_logits = logits[:, :-1, :]
-    # drop first token because there is no previous token to use as context for prediction
-    shift_prompt = prompt[:, 1:]
-    # cross-entropy loss between the predicted logits and target tokens
-    cross_entropy = mlx.nn.losses.cross_entropy(shift_logits, shift_prompt, reduction="mean")
-    # convert cross-entropy to perplexity
-    ppl_mean = mlx.core.exp(cross_entropy).item()
-    ppl_delta = ppl_mean - ref_ppl_mean
+    ppl_delta = result["ppl_mean"] - ref_ppl_mean
+    top1_delta = result["top1_acc"] - ref_top1_acc
 
-    # top-1 accuracy: fraction of tokens where the predicted token matches the true next token
-    top1_preds = mlx.core.argmax(shift_logits, axis=-1)
-    top1_acc = mlx.core.mean(top1_preds == shift_prompt).item()
-    top1_delta = top1_acc - ref_top1_acc
+    # now free log_probs
+    del log_probs, kld_none
 
     return {
         "kld_mean": kld_mean,
         "kld_list": kld_list,
         "kld_p95": kld_p95,
         "kld_p99": kld_p99,
-        "ppl_mean": ppl_mean,
+        "ppl_mean": result["ppl_mean"],
         "ppl_delta": ppl_delta,
-        "top1_acc": top1_acc,
+        "top1_acc": result["top1_acc"],
         "top1_delta": top1_delta,
-        "memory": memory,
     }
 
 
@@ -92,17 +65,27 @@ def main():
     memory_gib = 0
     all_kld = []
 
-    for i in range(window_count):
-        print(f"\nProcessing window {i + 1}/{window_count}")
+    # load model once, reuse across all windows
+    mlx.core.clear_cache()
+    memory_before = mlx.core.get_active_memory()
+    model = mlx_lm.utils.load_model(target_model_path)[0]
+    memory_after = mlx.core.get_active_memory()
+    memory = memory_after - memory_before
 
-        ref_data = mlx.core.load(f"outputs-{i:02d}.npz")
+    for i in range(window_count):
+        window_num = i + 1
+        window_file = f"outputs-{window_num:02d}.npz"
+
+        print(f"\nProcessing window {window_num}/{window_count}")
+
+        ref_data = mlx.core.load(window_file)
         prompt = ref_data["prompt"]
         ref_log_probs = ref_data["log_probs"]
         ref_ppl_mean = ref_data["ppl_mean"].item()
         ref_top1_acc = ref_data["top1_acc"].item()
 
         result = run_compare(
-            target_model_path,
+            model,
             prompt,
             ref_log_probs,
             ref_ppl_mean,
@@ -123,17 +106,23 @@ def main():
         all_kld.extend(result["kld_list"])
 
         print(f"KLD: {result['kld_mean']:.6f}")
+        print(f"KLD p95: {result['kld_p95']:.6f}")
+        print(f"KLD p99: {result['kld_p99']:.6f}")
         print(f"PPL: {result['ppl_mean']:.6f}")
         print(f"Δ PPL: {result['ppl_delta']:+.6f}")
         print(f"Acc@1: {result['top1_acc']:.6f}")
         print(f"Δ Acc@1: {result['top1_delta']:+.6f}")
 
         if i == 0:
-            memory_gib = result["memory"] / (1024**3)
+            memory_gib = memory / (1024**3)
 
         del ref_data, prompt, ref_log_probs, result
         gc.collect()
         mlx.core.clear_cache()
+
+    del model
+    gc.collect()
+    mlx.core.clear_cache()
 
     # overall token-weighted average metrics
     overall_ppl = math.exp(log_ppl_weighted / total_pred)

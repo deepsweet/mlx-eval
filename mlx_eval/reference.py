@@ -4,57 +4,27 @@ import pathlib
 import sys
 
 import mlx.core
-import mlx.nn
 import mlx_lm
 
 from . import const
+from . import utils
 
 
-def run_reference(ref_model_path, token_ids):
+def run_reference(model, token_ids):
     """
     Run a reference model on the prompt and return log-probabilities,
-    tokenized prompt, and reference perplexity as an MLX array.
+    tokenized prompt, perplexity, and top-1 accuracy metrics.
     """
-
-    mlx.core.clear_cache()
-
-    model = mlx_lm.utils.load_model(ref_model_path)[0]
 
     # add batch dimension (batch_size, max_tokens)
     prompt = mlx.core.array(token_ids)[None]
-
-    # raw logits per token from forward pass over vocabulary (batch_size, max_tokens, vocab_size)
-    logits = model(prompt)
-
-    # materialise logits, break giant lazy graph
-    mlx.core.eval(logits)
-
-    # cleanup
-    del model
-    gc.collect()
-    mlx.core.clear_cache()
-
-    # convert logits to numerically stable log-probabilities along the vocabulary axis
-    log_probs = mlx.nn.log_softmax(logits, axis=-1)
-
-    # drop last token because there is no "next token" to predict
-    shift_logits = logits[:, :-1, :]
-    # drop first token because there is no previous token to use as context for prediction
-    shift_prompt = prompt[:, 1:]
-    # cross-entropy loss between the predicted logits and target tokens
-    cross_entropy = mlx.nn.losses.cross_entropy(shift_logits, shift_prompt, reduction="mean")
-    # convert cross-entropy to perplexity
-    ppl_mean = mlx.core.exp(cross_entropy).item()
-
-    # top-1 accuracy: fraction of tokens where the predicted token matches the true next token
-    top1_preds = mlx.core.argmax(shift_logits, axis=-1)
-    top1_acc = mlx.core.mean(top1_preds == shift_prompt).item()
+    result = utils.run_model(model, prompt)
 
     return {
         "prompt": prompt,
-        "log_probs": log_probs,
-        "ppl_mean": ppl_mean,
-        "top1_acc": top1_acc,
+        "log_probs": result["log_probs"],
+        "ppl_mean": result["ppl_mean"],
+        "top1_acc": result["top1_acc"],
     }
 
 
@@ -86,16 +56,24 @@ def main():
     ref_ppls = []
     ref_top1s = []
 
+    # load model once, reuse across all windows
+    mlx.core.clear_cache()
+    model = mlx_lm.utils.load_model(ref_model_path)[0]
+
     for i in range(window_count):
+        window_num = i + 1
+        window_file = f"outputs-{window_num:02d}.npz"
+
+        print(f"\nProcessing window {window_num}/{window_count}")
+
         start = i * max_tokens
         end = start + max_tokens
         token_ids = prompt[start:end]
 
-        print(f"\nProcessing window {i + 1}/{window_count}")
-        result = run_reference(ref_model_path, token_ids)
+        result = run_reference(model, token_ids)
 
         mlx.core.savez(
-            f"outputs-{i:02d}.npz",
+            window_file,
             prompt=result["prompt"],
             log_probs=result["log_probs"],
             ppl_mean=mlx.core.array(result["ppl_mean"]),
@@ -112,6 +90,7 @@ def main():
         gc.collect()
         mlx.core.clear_cache()
 
+    del model
     del tokenizer
     gc.collect()
     mlx.core.clear_cache()
