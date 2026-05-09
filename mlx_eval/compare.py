@@ -72,9 +72,11 @@ def main():
     memory_after = mlx.core.get_active_memory()
     memory = memory_after - memory_before
 
+    output_dir = pathlib.Path("outputs")
+
     for i in range(window_count):
         window_num = i + 1
-        window_file = f"outputs-{window_num:02d}.npz"
+        window_file = output_dir / f"{window_num:02d}.npz"
 
         print(f"\nProcessing window {window_num}/{window_count}")
 
@@ -133,9 +135,10 @@ def main():
     overall_kld_p95 = statistics.quantiles(all_kld, n=100)[-5]
     overall_kld_p99 = statistics.quantiles(all_kld, n=100)[-1]
 
-    overall_ref = mlx.core.load("outputs-overall.npz")
-    ref_ppl_overall = overall_ref["ppl_mean"].item()
-    ref_top1_overall = overall_ref["top1_acc"].item()
+    overall_file = output_dir / "overall.npz"
+    ref_overall = mlx.core.load(overall_file)
+    ref_ppl_overall = ref_overall["ppl_mean"].item()
+    ref_top1_overall = ref_overall["top1_acc"].item()
 
     ppl_delta = overall_ppl - ref_ppl_overall
     top1_delta = overall_top1 - ref_top1_overall

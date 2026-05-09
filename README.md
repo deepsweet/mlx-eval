@@ -44,7 +44,7 @@ uv run mlx_eval.reference /path/to/Qwen3.6-35B-A3B-MLX 16 8192
 uv run mlx_eval.compare /path/to/Qwen3.6-35B-A3B-MLX-oQ8 16
 
 # cleanup when finished
-rm outputs-*.npz
+rm -rf outputs/
 ```
 
 ## Generate chart

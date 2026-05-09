@@ -60,9 +60,12 @@ def main():
     mlx.core.clear_cache()
     model = mlx_lm.utils.load_model(ref_model_path)[0]
 
+    output_dir = pathlib.Path("outputs")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
     for i in range(window_count):
         window_num = i + 1
-        window_file = f"outputs-{window_num:02d}.npz"
+        window_file = output_dir / f"{window_num:02d}.npz"
 
         print(f"\nProcessing window {window_num}/{window_count}")
 
@@ -99,8 +102,10 @@ def main():
     overall_ppl = math.exp(sum(math.log(p) for p in ref_ppls) / len(ref_ppls))
     overall_top1 = sum(ref_top1s) / len(ref_top1s)
 
+    overall_file = output_dir / "overall.npz"
+
     mlx.core.savez(
-        "outputs-overall.npz",
+        overall_file,
         ppl_mean=mlx.core.array(overall_ppl),
         top1_acc=mlx.core.array(overall_top1),
     )
