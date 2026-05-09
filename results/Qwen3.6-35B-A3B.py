@@ -2,44 +2,36 @@ import plotly.graph_objects
 
 datasets = [
     {
-        "name": "oQ",
-        "color": "#4c72b0",
-        "data": [
-            {"label": "oQ2", "kld": 0.293579, "ram": 11.40, "pos": "bottom right", "y": -0.003},
-            {"label": "oQ3", "kld": 0.196899, "ram": 14.77},
-            {"label": "oQ3.5", "kld": 0.191650, "ram": 16.00},
-            {"label": "oQ4", "kld": 0.036423, "ram": 18.83},
-            {"label": "oQ5", "kld": 0.013802, "ram": 22.76},
-            {"label": "oQ6", "kld": 0.011642, "ram": 26.51},
-            {"label": "oQ8", "kld": 0.007549, "ram": 34.27},
-        ],
-    },
-    {
         "name": "Q",
         "color": "#dd8452",
         "data": [
-            {"label": "Q2", "kld": 3.044922, "ram": 10.10},
-            {"label": "Q3", "kld": 0.254028, "ram": 14.14},
-            {"label": "Q4", "kld": 0.069305, "ram": 18.17},
-            {"label": "Q5", "kld": 0.026352, "ram": 22.20},
-            {"label": "Q6", "kld": 0.012466, "ram": 26.23, "pos": "top left"},
-            {"label": "Q8", "kld": 0.007668, "ram": 34.30, "pos": "top left", "x": -0.15},
+            # {"label": "Q2", "kld": 3.075195, "ram": 10.10},
+            {"label": "Q3", "kld": 0.285767, "ram": 14.14},
+            {"label": "Q4", "kld": 0.088287, "ram": 18.17},
+            {"label": "Q5", "kld": 0.037971, "ram": 22.20},
+            {"label": "Q6", "kld": 0.021137, "ram": 26.23, "pos": "top left"},
+            {"label": "Q8", "kld": 0.013805, "ram": 34.30, "pos": "top left", "x": -0.15},
         ],
     },
     {
-        "name": "MXFP",
-        "color": "#8c6bb1",
+        "name": "oQ",
+        "color": "#4c72b0",
         "data": [
-            {"label": "MXFP4", "kld": 0.124512, "ram": 17.16},
-            {"label": "MXFP8", "kld": 0.051361, "ram": 33.29},
+            # {"label": "oQ2", "kld": 0.318237, "ram": 11.40},
+            {"label": "oQ3", "kld": 0.216858, "ram": 14.77, "pos": "top left", "x": -0.15},
+            {"label": "oQ3.5", "kld": 0.216858, "ram": 16.00},
+            {"label": "oQ4", "kld": 0.047134, "ram": 18.83},
+            {"label": "oQ5", "kld": 0.023533, "ram": 22.76},
+            {"label": "oQ6", "kld": 0.019783, "ram": 26.51},
+            {"label": "oQ8", "kld": 0.014273, "ram": 34.27},
         ],
     },
     {
         "name": "UD",
         "color": "#55a868",
         "data": [
-            {"label": "UD3", "kld": 0.058746, "ram": 15.35},
-            {"label": "UD4", "kld": 0.020897, "ram": 19.32},
+            {"label": "UD3", "kld": 0.071945, "ram": 15.35},
+            {"label": "UD4", "kld": 0.029251, "ram": 19.32},
         ],
     },
 ]
