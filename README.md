@@ -33,7 +33,7 @@ mlx_vlm.convert \
   --mlx-path /path/to/Qwen3.6-35B-A3B-MLX
 
 # prepare a diverse prompt, Aes Sedai's "combined_all_micro" would suffice
-curl -L "https://huggingface.co/AesSedai/GLM-4.5-GGUF/raw/main/combined_all_micro.txt" > prompt.txt
+curl -L "https://huggingface.co/AesSedai/GLM-4.5-GGUF/raw/b077c76836c67a4b164d69331ac110ecc36bbc1f/combined_all_micro.txt" > prompt.txt
 
 # load, calculate and save reference model log-probabilities
 # mlx_eval.reference <reference_model_path> <window_count> <max_tokens>
