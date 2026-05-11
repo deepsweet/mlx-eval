@@ -34,6 +34,10 @@ The value is unitless. Higher Acc@1 indicates higher hard‑decision accuracy, p
 - `Acc@1` – mean accuracy
 - `Δ Acc@1` – delta in mean accuracy, occasional positive values are typically within measurement noise and do not indicate a genuine improvement
 
+### RAM
+
+Pure model RAM usage without any context, in GiB.
+
 ### Further readings
 
 - ["A Visual Guide to Quantization"](https://newsletter.maartengrootendorst.com/p/a-visual-guide-to-quantization)
