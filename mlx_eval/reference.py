@@ -33,12 +33,14 @@ def main():
         print("Usage: mlx_eval.reference <reference_model_path> <window_count> <max_tokens>")
         sys.exit(1)
 
-    ref_model_path = pathlib.Path(sys.argv[1])
+    model_path = pathlib.Path(sys.argv[1])
     window_count = int(sys.argv[2])
     max_tokens = int(sys.argv[3])
 
+    mlx.core.clear_cache()
+
     prompt_text = pathlib.Path(const.PROMPT_PATH).read_text(encoding="utf-8")
-    tokenizer = mlx_lm.utils.load_tokenizer(ref_model_path)
+    tokenizer = mlx_lm.utils.load_tokenizer(model_path)
     total_tokens = max_tokens * window_count
 
     prompt = tokenizer.encode(
@@ -56,9 +58,7 @@ def main():
     ref_ppls = []
     ref_top1s = []
 
-    # load model once, reuse across all windows
-    mlx.core.clear_cache()
-    model = mlx_lm.utils.load_model(ref_model_path)[0]
+    model = mlx_lm.utils.load_model(model_path)[0]
 
     output_dir = pathlib.Path("outputs")
     output_dir.mkdir(parents=True, exist_ok=True)
