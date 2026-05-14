@@ -24,7 +24,7 @@ The unit is *nats* (units of information), because the computation uses natural 
 
 ### PPL
 
-Perplexity (PPL) measures the uncertainty in the correct next token, but *not necessarily the one it chooses*. The fundamental problem is that perplexity mixes the model's intrinsic uncertainty with quantisation damage, thus making PPL good for spotting anomalies, but not as a standalone fidelity metric.
+Perplexity (PPL) measures the uncertainty in the correct next token, but *not necessarily the one it chooses*. The fundamental problem is that perplexity mixes the model's intrinsic uncertainty with quantization damage, thus making PPL good for spotting anomalies, but not as a standalone fidelity metric.
 
 The value is unitless. Lower PPL indicates higher confidence, perfect value is 1. A PPL of 10 means the model is as uncertain, *on average*, as if it were randomly choosing among 10 equally likely options.
 
@@ -42,7 +42,7 @@ The value is unitless. Higher Acc@1 indicates higher hard‑decision accuracy, p
 
 ### RAM
 
-Pure model RAM usage without any context, in GiB.
+Active memory allocated for the model's *text-only* weights, in GiB. Loading the full Vision‑Language model would add about 1 GiB of extra RAM, but the relative differences between quantizations remain the same.
 
 ### Further readings
 
@@ -131,12 +131,12 @@ This is a work-in-progress evaluation, I’ll add more quants over time:
 >Qwen3.6-27B architecture finds this evaluation methodology rather challenging. Unlike the 35B-A3B MoE, the dense model struggles more on abrupt shifts between diverse domains.
 >
 >- Reference mean PPL is 8.804764 (expected <5).
->- Noticeable _negative_ PPL deltas suggests that the noise introduced by quantization acts as a "regularization filter", actually "helping" the model on this specific prompt.
+>- Noticeable _negative_ PPL deltas suggest that the noise introduced by quantization acts as a "regularization filter", actually "helping" the model on this specific prompt.
 >- The evaluation itself is correct, because when I switch to the WikiText‑2, reference mean PPL becomes 4.593750 and PPL delta +0.062500 (expected degradation). Also, on Edgar Poe's prose, mean PPL drops even lower to 1.359375.
 >- Dense Gemma‑4‑31B (pre‑trained base, not instruction‑tuned) was briefly evaluated on the same prompt, and showed reference mean PPL <4.
 >- PPL is good for catching anomalies, and here we have one.
 >
->My intention is to keep this behaviour exposed as is, because a true evaluation should not aim to please its target.
+>My intention is to keep this behavior exposed as is, because a true evaluation should not aim to please its target.
 
 ### Reference
 
