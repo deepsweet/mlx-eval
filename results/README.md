@@ -2,7 +2,13 @@
 
 Quantization aims to reduce the precision of a language model's parameters from higher to lower bit-widths. To measure the impact, we need to compare different metrics between a reference model and its quantized versions.
 
-In our evaluation, the model works in an autoregressive fashion: it receives a sequence of tokens and, in a single forward pass, predicts a probability distribution over the entire vocabulary for the next token. You can think of this as a highly advanced autocomplete: the model considers every possible next token, assigns each a likelihood, and the token with the highest probability is its best guess of what comes next. By comparing these predicted probabilities to the actual next token in the text, we can measure the model's fidelity, uncertainty, and correctness.
+## Methodology
+
+In this evaluation, the model works in an autoregressive fashion: it receives a sequence of tokens and, in a single forward pass, predicts a probability distribution over the entire vocabulary for the next token. You can think of this as a highly advanced autocomplete: the model considers every possible next token, assigns each a likelihood, and the token with the highest probability is its best guess of what comes next. By comparing these predicted probabilities to the actual next token in the text, we can measure the model's fidelity, uncertainty, and correctness.
+
+The prompt consists of 16 windows × 8,192 tokens = 131,072 tokens of Aes Sedai's [combined_all_micro.txt](https://huggingface.co/AesSedai/GLM-4.5-GGUF/raw/main/combined_all_micro.txt). It's *not* a "community-standard" homogeneous [WikiText-2](https://huggingface.co/datasets/Salesforce/wikitext/blob/main/wikitext-2-raw-v1/test-00000-of-00001.parquet), but rather a challenging all-in-one stress test with abrupt shifts between diverse domains. I don't attempt to cover up these difficulties, and the sudden context breaks at window boundaries are left as they are, so that every quantization is evaluated under the same conditions.
+
+I recommend avoiding direct comparisons of absolute numbers across different models, as their architectures and training differ substantially. What really matters is the *relative* differences between quantizations of the same model within the same test suite.
 
 ## Metrics
 
@@ -54,7 +60,6 @@ Pure model RAM usage without any context, in GiB.
 - tool: [mlx-vlm](https://github.com/Blaizzy/mlx-vlm) v0.4.4
 - multimodal: Vision-Language
 - data type: bfloat16
-- prompt: 16 windows x 8192 tokens = 131072 tokens of Aes Sedai's multi-domain [combined_all_micro.txt](https://huggingface.co/AesSedai/GLM-4.5-GGUF/raw/main/combined_all_micro.txt)
 - PPL: 5.791247
 - Acc@1: 0.628037
 
@@ -114,3 +119,74 @@ oQ3 and oQ3.5 having the same KLD mean is not a typo – I've carefully checked 
 |-------|---------:|---------:|---------:|---------:|----------:|---------:|----------:|------:|
 | UD3   | 0.071945 | 0.225586 | 0.707031 | 5.943074 | +0.151827 | 0.623253 | -0.004784 | 15.35 |
 | UD4   | 0.029251 | 0.114746 | 0.241211 | 5.785594 | -0.005653 | 0.627831 | -0.000206 | 19.32 |
+
+## Qwen3.6-27B
+
+This is a work-in-progress evaluation, I’ll add more quants over time:
+
+![Qwen3.6-27B KLD/RAM chart](./Qwen3.6-27B.svg)
+
+>[!CAUTION]
+>Qwen3.6-27B architecture finds this evaluation methodology rather challenging. Unlike the 35B-A3B MoE, the dense model struggles more on abrupt shifts between diverse domains.
+>
+>- Reference mean PPL is 8.804764 (expected <5).
+>- Noticeable _negative_ PPL deltas suggests that the noise introduced by quantization acts as a "regularization filter", actually "helping" the model on this specific prompt.
+>- The evaluation itself is correct, because when I switch to the WikiText‑2, reference mean PPL becomes 4.593750 and PPL delta +0.062500 (expected degradation). Also, on Edgar Poe's prose, mean PPL drops even lower to 1.359375.
+>
+>My intention is to keep this behaviour exposed as is, because a true evaluation should not aim to please its target.
+
+### Reference
+
+- model: [Qwen/Qwen3.6-27B](https://huggingface.co/Qwen/Qwen3.6-27B)
+- tool: [mlx-vlm](https://github.com/Blaizzy/mlx-vlm) v0.4.4
+- multimodal: Vision-Language
+- data type: bfloat16
+- PPL: 8.804764
+- Acc@1: 0.595707
+
+### Q
+
+- tool: [mlx-vlm](https://github.com/Blaizzy/mlx-vlm) v0.4.4
+- mode: affine
+- group size: default, omitted
+- data type: bfloat16
+
+| Quant |      KLD |  KLD p95 |   KLD p99 |        PPL |      Δ PPL |    Acc@1 |   Δ Acc@1 |   RAM | 
+|-------|---------:|---------:|----------:|-----------:|-----------:|---------:|----------:|------:|
+| Q4    | 0.299316 | 0.369141 | 10.375000 |   7.873294 |  -0.931470 | 0.600926 | +0.005219 | 14.09 |
+
+### oQ
+
+- ["oQ: oMLX Universal Dynamic Quantization"](https://github.com/jundot/omlx/blob/main/docs/oQ_Quantization.md)
+- https://huggingface.co/collections/deepsweet/qwen36-35b-a3b
+- tool: [oMLX](https://github.com/jundot/omlx) v0.3.8
+- sensitivity model:
+  - tool: [mlx-vlm](https://github.com/Blaizzy/mlx-vlm) v0.4.4
+  - quantization: Q8
+  - mode: affine
+  - group size: default, omitted
+  - data type: bfloat16
+- text-only: no
+- data type: bfloat16
+
+| Quant |      KLD |  KLD p95 |  KLD p99 |      PPL |     Δ PPL |    Acc@1 |   Δ Acc@1 |   RAM | 
+|-------|---------:|---------:|---------:|---------:|----------:|---------:|----------:|------:|
+| oQ4   | 0.275848 | 0.304688 | 9.500000 | 8.048206 | -0.756558 | 0.600156 | +0.004448 | 14.72 |
+
+### UD
+
+- ["MLX Dynamic Quants"](https://unsloth.ai/docs/models/qwen3.6#mlx-dynamic-quants)
+- https://huggingface.co/unsloth/Qwen3.6-27B-UD-MLX-4bit
+
+| Quant |      KLD |  KLD p95 |  KLD p99 |      PPL |     Δ PPL |    Acc@1 |   Δ Acc@1 |   RAM | 
+|-------|---------:|---------:|---------:|---------:|----------:|---------:|----------:|------:|
+| UD4   | 0.168304 | 0.159180 | 4.477188 | 8.255171 | -0.549592 | 0.599179 | +0.003472 | 23.53 |
+
+### PARO
+
+- ["ParoQuant: Pairwise Rotation Quantization for Efficient Reasoning LLM Inference"](https://github.com/z-lab/paroquant)
+- https://huggingface.co/z-lab/Qwen3.6-27B-PARO
+
+| Quant |      KLD |  KLD p95 |  KLD p99 |      PPL |     Δ PPL |    Acc@1 |   Δ Acc@1 |   RAM | 
+|-------|---------:|---------:|---------:|---------:|----------:|---------:|----------:|------:|
+| PARO  | 0.235654 | 0.246749 | 7.366954 | 8.461260 | -0.343504 | 0.596165 | +0.000458 | 13.42 |
