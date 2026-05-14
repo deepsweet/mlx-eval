@@ -132,6 +132,7 @@ This is a work-in-progress evaluation, I’ll add more quants over time:
 >- Reference mean PPL is 8.804764 (expected <5).
 >- Noticeable _negative_ PPL deltas suggests that the noise introduced by quantization acts as a "regularization filter", actually "helping" the model on this specific prompt.
 >- The evaluation itself is correct, because when I switch to the WikiText‑2, reference mean PPL becomes 4.593750 and PPL delta +0.062500 (expected degradation). Also, on Edgar Poe's prose, mean PPL drops even lower to 1.359375.
+>- Dense Gemma‑4‑31B (pre‑trained base, not instruction‑tuned) was briefly evaluated on the same prompt, and showed reference mean PPL <4.
 >
 >My intention is to keep this behaviour exposed as is, because a true evaluation should not aim to please its target.
 
