@@ -7,6 +7,7 @@ dependencies = [
     "kaleido>=1.2.0",
     "mlx>=0.31.2",
     "mlx-lm>=0.31.3",
+    "paroquant>=0.1.14",
     "plotly>=6.7.0",
 ]
 [dependency-groups]
@@ -94,7 +95,9 @@ ignore = [
   # too-many-statements
   "PLR0915",
   # unnecessary-assign
-  "RET504"
+  "RET504",
+  # import-outside-top-level
+  "PLC0415"
 ]
 unfixable = [
   # unused-import

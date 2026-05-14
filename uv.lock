@@ -346,6 +346,7 @@ dependencies = [
     { name = "kaleido" },
     { name = "mlx" },
     { name = "mlx-lm" },
+    { name = "paroquant" },
     { name = "plotly" },
 ]
 
@@ -360,6 +361,7 @@ requires-dist = [
     { name = "kaleido", specifier = ">=1.2.0" },
     { name = "mlx", specifier = ">=0.31.2" },
     { name = "mlx-lm", specifier = ">=0.31.3" },
+    { name = "paroquant", specifier = ">=0.1.14" },
     { name = "plotly", specifier = ">=6.7.0" },
 ]
 
@@ -527,6 +529,18 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/d7/f1/e7a6dd94a8d4a5626c03e4e99c87f241ba9e350cd9e6d75123f992427270/packaging-26.2.tar.gz", hash = "sha256:ff452ff5a3e828ce110190feff1178bb1f2ea2281fa2075aadb987c2fb221661", size = 228134, upload-time = "2026-04-24T20:15:23.917Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/df/b2/87e62e8c3e2f4b32e5fe99e0b86d576da1312593b39f47d8ceef365e95ed/packaging-26.2-py3-none-any.whl", hash = "sha256:5fc45236b9446107ff2415ce77c807cee2862cb6fac22b8a73826d0693b0980e", size = 100195, upload-time = "2026-04-24T20:15:22.081Z" },
+]
+
+[[package]]
+name = "paroquant"
+version = "0.1.14"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "rich" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a5/84/ffd00ca8cf9c1b823ee9d1fe565aa75dcdcc1391e0c1bdb73188bbca4cfa/paroquant-0.1.14.tar.gz", hash = "sha256:63d89c32396c2fd6fa2badcba847c15c0ec271e4e820241f8d4f8574edaf03e7", size = 52420, upload-time = "2026-05-07T20:06:14.005Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b8/c7/ac69eedbb31c278e6c152c1f83719c54d23c0d234244d64d18ae504c78d8/paroquant-0.1.14-py3-none-any.whl", hash = "sha256:96ba6ec97a3eb00a2f37aee90b3a912b1febf38ac3777a40fa69e59eb874c99a", size = 62906, upload-time = "2026-05-07T20:06:12.711Z" },
 ]
 
 [[package]]

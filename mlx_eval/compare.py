@@ -1,11 +1,11 @@
 import gc
+import json
 import math
 import pathlib
 import statistics
 import sys
 
 import mlx.core
-import mlx_lm
 
 from . import utils
 
@@ -55,8 +55,10 @@ def main():
         print("Usage: mlx_eval.compare <target_model_path> <window_count>")
         sys.exit(1)
 
-    target_model_path = pathlib.Path(sys.argv[1])
+    model_path = pathlib.Path(sys.argv[1])
     window_count = int(sys.argv[2])
+
+    mlx.core.clear_cache()
 
     total_pred = 0
     log_ppl_weighted = 0
@@ -65,12 +67,23 @@ def main():
     memory_gib = 0
     all_kld = []
 
-    # load model once, reuse across all windows
-    mlx.core.clear_cache()
-    memory_before = mlx.core.get_active_memory()
-    model = mlx_lm.utils.load_model(target_model_path)[0]
-    memory_after = mlx.core.get_active_memory()
-    memory = memory_after - memory_before
+    config_path = model_path / "config.json"
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    quant_config = config.get("quantization_config")
+    quant_method = quant_config.get("quant_method")
+
+    if (quant_method == "paroquant"):
+        from paroquant.inference.backends.mlx.load import load as load_model
+
+        memory_before = mlx.core.get_active_memory()
+        model = load_model(model_path, force_text=True)[0]
+        memory_after = mlx.core.get_active_memory()
+    else:
+        from mlx_lm.utils import load_model
+
+        memory_before = mlx.core.get_active_memory()
+        model = load_model(model_path)[0]
+        memory_after = mlx.core.get_active_memory()
 
     output_dir = pathlib.Path("outputs")
 
@@ -116,6 +129,7 @@ def main():
         print(f"Δ Acc@1: {result['top1_delta']:+.6f}")
 
         if i == 0:
+            memory = memory_after - memory_before
             memory_gib = memory / (1024**3)
 
         del ref_data, prompt, ref_log_probs, result
