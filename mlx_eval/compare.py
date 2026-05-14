@@ -78,12 +78,16 @@ def main():
         memory_before = mlx.core.get_active_memory()
         model = load_model(model_path, force_text=True)[0]
         memory_after = mlx.core.get_active_memory()
+        memory = memory_after - memory_before
+        memory_gib = memory / (1024**3)
     else:
         from mlx_lm.utils import load_model
 
         memory_before = mlx.core.get_active_memory()
         model = load_model(model_path)[0]
         memory_after = mlx.core.get_active_memory()
+        memory = memory_after - memory_before
+        memory_gib = memory / (1024**3)
 
     output_dir = pathlib.Path("outputs")
 
@@ -127,10 +131,6 @@ def main():
         print(f"Δ PPL: {result['ppl_delta']:+.6f}")
         print(f"Acc@1: {result['top1_acc']:.6f}")
         print(f"Δ Acc@1: {result['top1_delta']:+.6f}")
-
-        if i == 0:
-            memory = memory_after - memory_before
-            memory_gib = memory / (1024**3)
 
         del ref_data, prompt, ref_log_probs, result
         gc.collect()
