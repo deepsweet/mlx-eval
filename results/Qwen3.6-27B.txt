@@ -226,7 +226,164 @@ RAM: 14.09
 
 
 
-uv run mlx_eval.compare Qwen3.6-27B-MLX-VL-Q6 16
+$ uv run mlx_eval.compare Qwen3.6-27B-MLX-VL-Q5 16
+
+Processing window 1/16
+KLD: 0.263672
+KLD p95: 0.306641
+KLD p99: 9.816875
+PPL: 13.590554
+Δ PPL: -1.335750
+Acc@1: 0.558296
+Δ Acc@1: +0.004761
+
+Processing window 2/16
+KLD: 0.063477
+KLD p95: 0.105957
+KLD p99: 0.443906
+PPL: 6.222209
+Δ PPL: -0.247865
+Acc@1: 0.629838
+Δ Acc@1: +0.002808
+
+Processing window 3/16
+KLD: 0.101074
+KLD p95: 0.121094
+KLD p99: 1.461484
+PPL: 8.504751
+Δ PPL: -0.548509
+Acc@1: 0.559639
+Δ Acc@1: +0.002686
+
+Processing window 4/16
+KLD: 0.476562
+KLD p95: 0.379688
+KLD p99: 17.785000
+PPL: 8.372897
+Δ PPL: -0.822931
+Acc@1: 0.644976
+Δ Acc@1: +0.005616
+
+Processing window 5/16
+KLD: 0.194336
+KLD p95: 0.195654
+KLD p99: 6.290000
+PPL: 12.767144
+Δ PPL: -1.254821
+Acc@1: 0.532658
+Δ Acc@1: +0.007447
+
+Processing window 6/16
+KLD: 0.439453
+KLD p95: 0.475391
+KLD p99: 15.651250
+PPL: 6.995818
+Δ PPL: -0.335736
+Acc@1: 0.664144
+Δ Acc@1: +0.001953
+
+Processing window 7/16
+KLD: 0.107422
+KLD p95: 0.112476
+KLD p99: 1.788359
+PPL: 5.937273
+Δ PPL: +0.046204
+Acc@1: 0.624588
+Δ Acc@1: +0.000000
+
+Processing window 8/16
+KLD: 0.285156
+KLD p95: 0.385449
+KLD p99: 10.450625
+PPL: 9.788909
+Δ PPL: -1.131408
+Acc@1: 0.592602
+Δ Acc@1: +0.004029
+
+Processing window 9/16
+KLD: 0.335938
+KLD p95: 0.324902
+KLD p99: 12.638125
+PPL: 7.161719
+Δ PPL: -1.211178
+Acc@1: 0.614089
+Δ Acc@1: +0.012941
+
+Processing window 10/16
+KLD: 0.235352
+KLD p95: 0.166016
+KLD p99: 9.187500
+PPL: 7.274499
+Δ PPL: -0.968588
+Acc@1: 0.618850
+Δ Acc@1: +0.011476
+
+Processing window 11/16
+KLD: 0.105957
+KLD p95: 0.218750
+KLD p99: 2.690781
+PPL: 7.865609
+Δ PPL: -0.773072
+Acc@1: 0.583812
+Δ Acc@1: +0.007569
+
+Processing window 12/16
+KLD: 0.112793
+KLD p95: 0.125977
+KLD p99: 2.142812
+PPL: 6.571963
+Δ PPL: -0.315395
+Acc@1: 0.614089
+Δ Acc@1: +0.001831
+
+Processing window 13/16
+KLD: 0.051514
+KLD p95: 0.106445
+KLD p99: 0.324766
+PPL: 5.891069
+Δ PPL: +0.000000
+Acc@1: 0.632157
+Δ Acc@1: +0.000732
+
+Processing window 14/16
+KLD: 0.177734
+KLD p95: 0.258496
+KLD p99: 5.008750
+PPL: 9.788909
+Δ PPL: -0.962104
+Acc@1: 0.585276
+Δ Acc@1: +0.003785
+
+Processing window 15/16
+KLD: 0.182617
+KLD p95: 0.197607
+KLD p99: 5.439687
+PPL: 8.912903
+Δ PPL: -0.876006
+Acc@1: 0.589672
+Δ Acc@1: +0.005616
+
+Processing window 16/16
+KLD: 0.126953
+KLD p95: 0.162109
+KLD p99: 2.897187
+PPL: 8.638682
+Δ PPL: -0.998464
+Acc@1: 0.569405
+Δ Acc@1: +0.009523
+
+KLD: 0.203751
+KLD p95: 0.167969
+KLD p99: 6.718750
+PPL: 8.143076
+Δ PPL: -0.661688
+Acc@1: 0.600881
+Δ Acc@1: +0.005173
+RAM: 17.23
+
+
+
+$ uv run mlx_eval.compare Qwen3.6-27B-MLX-VL-Q6 16
 
 Processing window 1/16
 KLD: 0.128906
@@ -697,6 +854,163 @@ RAM: 14.72
 
 
 
+$ uv run mlx_eval.compare Qwen3.6-27B-MLX-VL-oQ5 16
+
+Processing window 1/16
+KLD: 0.238281
+KLD p95: 0.268262
+KLD p99: 8.013125
+PPL: 13.804574
+Δ PPL: -1.121730
+Acc@1: 0.556464
+Δ Acc@1: +0.002930
+
+Processing window 2/16
+KLD: 0.060303
+KLD p95: 0.105640
+KLD p99: 0.438555
+PPL: 6.173787
+Δ PPL: -0.296286
+Acc@1: 0.630204
+Δ Acc@1: +0.003174
+
+Processing window 3/16
+KLD: 0.108887
+KLD p95: 0.120288
+KLD p99: 1.771641
+PPL: 8.504751
+Δ PPL: -0.548509
+Acc@1: 0.560249
+Δ Acc@1: +0.003296
+
+Processing window 4/16
+KLD: 0.476562
+KLD p95: 0.375000
+KLD p99: 18.250000
+PPL: 8.115291
+Δ PPL: -1.080538
+Acc@1: 0.647662
+Δ Acc@1: +0.008302
+
+Processing window 5/16
+KLD: 0.183594
+KLD p95: 0.200537
+KLD p99: 4.752187
+PPL: 12.374340
+Δ PPL: -1.647625
+Acc@1: 0.534489
+Δ Acc@1: +0.009278
+
+Processing window 6/16
+KLD: 0.439453
+KLD p95: 0.472656
+KLD p99: 16.258750
+PPL: 6.675456
+Δ PPL: -0.656098
+Acc@1: 0.667684
+Δ Acc@1: +0.005494
+
+Processing window 7/16
+KLD: 0.108398
+KLD p95: 0.111328
+KLD p99: 2.003281
+PPL: 6.030772
+Δ PPL: +0.139703
+Acc@1: 0.624954
+Δ Acc@1: +0.000366
+
+Processing window 8/16
+KLD: 0.263672
+KLD p95: 0.339258
+KLD p99: 9.008750
+PPL: 9.788909
+Δ PPL: -1.131408
+Acc@1: 0.593090
+Δ Acc@1: +0.004517
+
+Processing window 9/16
+KLD: 0.306641
+KLD p95: 0.271484
+KLD p99: 11.941875
+PPL: 7.274499
+Δ PPL: -1.098398
+Acc@1: 0.611769
+Δ Acc@1: +0.010621
+
+Processing window 10/16
+KLD: 0.238281
+KLD p95: 0.168945
+KLD p99: 9.562500
+PPL: 7.217889
+Δ PPL: -1.025199
+Acc@1: 0.619094
+Δ Acc@1: +0.011720
+
+Processing window 11/16
+KLD: 0.096680
+KLD p95: 0.191406
+KLD p99: 2.421875
+PPL: 7.989475
+Δ PPL: -0.649207
+Acc@1: 0.580149
+Δ Acc@1: +0.003907
+
+Processing window 12/16
+KLD: 0.109863
+KLD p95: 0.125977
+KLD p99: 2.547969
+PPL: 6.833760
+Δ PPL: -0.053598
+Acc@1: 0.609449
+Δ Acc@1: -0.002808
+
+Processing window 13/16
+KLD: 0.058594
+KLD p95: 0.110840
+KLD p99: 0.383359
+PPL: 5.754603
+Δ PPL: -0.136466
+Acc@1: 0.634721
+Δ Acc@1: +0.003296
+
+Processing window 14/16
+KLD: 0.187500
+KLD p95: 0.305371
+KLD p99: 5.250000
+PPL: 9.340642
+Δ PPL: -1.410371
+Acc@1: 0.586742
+Δ Acc@1: +0.005250
+
+Processing window 15/16
+KLD: 0.188477
+KLD p95: 0.215186
+KLD p99: 5.254375
+PPL: 8.504751
+Δ PPL: -1.284158
+Acc@1: 0.592602
+Δ Acc@1: +0.008546
+
+Processing window 16/16
+KLD: 0.144531
+KLD p95: 0.229492
+KLD p99: 3.255469
+PPL: 8.243088
+Δ PPL: -1.394058
+Acc@1: 0.571847
+Δ Acc@1: +0.011964
+
+KLD: 0.200607
+KLD p95: 0.166992
+KLD p99: 6.218750
+PPL: 8.048206
+Δ PPL: -0.756558
+Acc@1: 0.601323
+Δ Acc@1: +0.005616
+RAM: 17.69
+
+
+
 $ uv run mlx_eval.compare Qwen3.6-27B-UD-MLX-4bit 16
 
 Processing window 1/16
@@ -854,7 +1168,7 @@ RAM: 23.53
 
 
 
-uv run mlx_eval.compare Qwen3.6-27B-PARO 16
+$ uv run mlx_eval.compare Qwen3.6-27B-PARO 16
 
 Processing window 1/16
 KLD: 0.307421

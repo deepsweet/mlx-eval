@@ -155,11 +155,14 @@ This is a work-in-progress evaluation, I’ll add more quants over time:
 | Quant |      KLD |  KLD p95 |   KLD p99 |        PPL |      Δ PPL |    Acc@1 |   Δ Acc@1 |   RAM | 
 |-------|---------:|---------:|----------:|-----------:|-----------:|---------:|----------:|------:|
 | Q4    | 0.299316 | 0.369141 | 10.375000 |   7.873294 |  -0.931470 | 0.600926 | +0.005219 | 14.09 |
+| Q5    | 0.203751 | 0.167969 |  6.718750 |   8.143076 |  -0.661688 | 0.600881 | +0.005173 | 17.23 |
+| Q6    | 0.115662 | 0.105469 |  2.156250 |   8.965280 |  +0.160517 | 0.594303 | -0.001404 | 20.36 |
+| Q8    | 0.057327 | 0.082031 |  0.396484 |   8.856506 |  +0.051742 | 0.595753 | +0.000046 | 26.62 |
 
 ### oQ
 
 - ["oQ: oMLX Universal Dynamic Quantization"](https://github.com/jundot/omlx/blob/main/docs/oQ_Quantization.md)
-- https://huggingface.co/collections/deepsweet/qwen36-35b-a3b
+- https://huggingface.co/collections/deepsweet/qwen36-27b
 - tool: [oMLX](https://github.com/jundot/omlx) v0.3.8
 - sensitivity model:
   - tool: [mlx-vlm](https://github.com/Blaizzy/mlx-vlm) v0.4.4
@@ -173,6 +176,7 @@ This is a work-in-progress evaluation, I’ll add more quants over time:
 | Quant |      KLD |  KLD p95 |  KLD p99 |      PPL |     Δ PPL |    Acc@1 |   Δ Acc@1 |   RAM | 
 |-------|---------:|---------:|---------:|---------:|----------:|---------:|----------:|------:|
 | oQ4   | 0.275848 | 0.304688 | 9.500000 | 8.048206 | -0.756558 | 0.600156 | +0.004448 | 14.72 |
+| oQ5   | 0.200607 | 0.166992 | 6.218750 | 8.048206 | -0.756558 | 0.601323 | +0.005616 | 17.69 |
 
 ### UD
 
