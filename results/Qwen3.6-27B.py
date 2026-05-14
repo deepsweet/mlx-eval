@@ -7,7 +7,7 @@ datasets = [
         "data": [
             {"label": "Q4", "kld": 0.299316, "ram": 14.09},
             {"label": "Q5", "kld": 0.203751, "ram": 17.23, "pos": "top left", "x": -0.15},
-            {"label": "Q6", "kld": 0.115662, "ram": 20.36},
+            {"label": "Q6", "kld": 0.115662, "ram": 20.36, "pos": "top left", "x": -0.15},
             {"label": "Q8", "kld": 0.057327, "ram": 26.62},
         ],
     },
@@ -17,6 +17,7 @@ datasets = [
         "data": [
             {"label": "oQ4", "kld": 0.275848, "ram": 14.72},
             {"label": "oQ5", "kld": 0.200607, "ram": 17.69},
+            {"label": "oQ6", "kld": 0.118469, "ram": 20.65},
         ],
     },
     {
