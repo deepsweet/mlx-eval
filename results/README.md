@@ -14,7 +14,7 @@ I recommend avoiding direct comparisons of absolute numbers across different mod
 
 ### KLD
 
-Kullback‑Leibler divergence (KLD) measures how much the whole probability distribution over the vocabulary for the next token has shifted.
+Kullback‑Leibler divergence (KLD) measures how much the *full* probability distribution over the vocabulary for the next token has shifted.
 
 The unit is *nats* (units of information), because the computation uses natural logarithms. Lower KLD indicates higher fidelity, perfect value is 0.
 
@@ -24,7 +24,7 @@ The unit is *nats* (units of information), because the computation uses natural 
 
 ### PPL
 
-Perplexity (PPL) measures the uncertainty in the correct next token, but *not necessarily the one it chooses*.
+Perplexity (PPL) measures the uncertainty in the correct next token, but *not necessarily the one it chooses*. The fundamental problem is that perplexity mixes the model's intrinsic uncertainty with quantisation damage, thus making PPL good for spotting anomalies, but not as a standalone fidelity metric.
 
 The value is unitless. Lower PPL indicates higher confidence, perfect value is 1. A PPL of 10 means the model is as uncertain, *on average*, as if it were randomly choosing among 10 equally likely options.
 
@@ -48,6 +48,7 @@ Pure model RAM usage without any context, in GiB.
 
 - ["A Visual Guide to Quantization"](https://newsletter.maartengrootendorst.com/p/a-visual-guide-to-quantization)
 - ["Why Maybe We're Measuring LLM Compression Wrong"](https://huggingface.co/blog/rishiraj/kld-guided-quantization)
+- ["Accuracy is Not All You Need"](https://arxiv.org/abs/2407.09141)
 - ["The 'Q4_K_M' Illusion: Why KL Divergence and Perplexity Are Your Only Friends in the GGUF Wild West"](https://www.banandre.com/blog/quantization-fidelity-benchmarking-kld-and-ppl-as-metrics-for-gguf-model-selection)
 
 ## Qwen3.6-35B-A3B
@@ -133,6 +134,7 @@ This is a work-in-progress evaluation, I’ll add more quants over time:
 >- Noticeable _negative_ PPL deltas suggests that the noise introduced by quantization acts as a "regularization filter", actually "helping" the model on this specific prompt.
 >- The evaluation itself is correct, because when I switch to the WikiText‑2, reference mean PPL becomes 4.593750 and PPL delta +0.062500 (expected degradation). Also, on Edgar Poe's prose, mean PPL drops even lower to 1.359375.
 >- Dense Gemma‑4‑31B (pre‑trained base, not instruction‑tuned) was briefly evaluated on the same prompt, and showed reference mean PPL <4.
+>- PPL is good for catching anomalies, and here we have one.
 >
 >My intention is to keep this behaviour exposed as is, because a true evaluation should not aim to please its target.
 
