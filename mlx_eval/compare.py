@@ -10,13 +10,7 @@ import mlx.core
 from . import utils
 
 
-def run_compare(
-    model,
-    prompt,
-    ref_log_probs,
-    ref_ppl_mean,
-    ref_top1_acc,
-):
+def run_compare(model, prompt, ref_log_probs, ref_ppl_mean, ref_top1_acc):
     """
     Run a target model comparison using reference log-probabilities,
     and return KL divergence, perplexity, and top-1 accuracy metrics.
@@ -50,6 +44,21 @@ def run_compare(
     }
 
 
+def load_model(loader, *args, **kwargs):
+    mlx.core.clear_cache()
+
+    memory_before = mlx.core.get_active_memory()
+    model = loader(*args, **kwargs)
+
+    if isinstance(model, tuple):
+        model = model[0]
+
+    memory_after = mlx.core.get_active_memory()
+    memory = memory_after - memory_before
+
+    return model, memory
+
+
 def main():
     if len(sys.argv) != 3:
         print("Usage: mlx_eval.compare <target_model_path> <window_count>")
@@ -58,7 +67,35 @@ def main():
     model_path = pathlib.Path(sys.argv[1])
     window_count = int(sys.argv[2])
 
-    mlx.core.clear_cache()
+    config_path = model_path / "config.json"
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    quant_config = config.get("quantization_config")
+
+    if quant_config is None:
+        jang_config_path = model_path / "jang_config.json"
+
+        if not jang_config_path.exists():
+            raise RuntimeError("Unsupported MLX quantization")
+
+        jang_config = json.loads(jang_config_path.read_text(encoding="utf-8"))
+
+        if jang_config.get("weight_format") == "mxtq":
+            from jang_tools.load_jangtq import load_jangtq_model
+
+            model, memory = load_model(load_jangtq_model, model_path)
+        else:
+            raise RuntimeError("Unsupported JANG quantization")
+    else:
+        quant_method = quant_config.get("quant_method")
+
+        if (quant_method == "paroquant"):
+            from paroquant.inference.backends.mlx.load import load as load_paro_model
+
+            model, memory = load_model(load_paro_model, model_path, force_text=True)
+        else:
+            from mlx_lm.utils import load_model as load_lm_model
+
+            model, memory = load_model(load_lm_model, model_path)
 
     total_pred = 0
     log_ppl_weighted = 0
@@ -66,28 +103,6 @@ def main():
     kld_weighted = 0
     memory_gib = 0
     all_kld = []
-
-    config_path = model_path / "config.json"
-    config = json.loads(config_path.read_text(encoding="utf-8"))
-    quant_config = config.get("quantization_config")
-    quant_method = quant_config.get("quant_method")
-
-    if (quant_method == "paroquant"):
-        from paroquant.inference.backends.mlx.load import load as load_model
-
-        memory_before = mlx.core.get_active_memory()
-        model = load_model(model_path, force_text=True)[0]
-        memory_after = mlx.core.get_active_memory()
-        memory = memory_after - memory_before
-        memory_gib = memory / (1024**3)
-    else:
-        from mlx_lm.utils import load_model
-
-        memory_before = mlx.core.get_active_memory()
-        model = load_model(model_path)[0]
-        memory_after = mlx.core.get_active_memory()
-        memory = memory_after - memory_before
-        memory_gib = memory / (1024**3)
 
     output_dir = pathlib.Path("outputs")
 
@@ -156,6 +171,8 @@ def main():
 
     ppl_delta = overall_ppl - ref_ppl_overall
     top1_delta = overall_top1 - ref_top1_overall
+
+    memory_gib = memory / (1024**3)
 
     print(f"\nKLD: {overall_kld_mean:.6f}")
     print(f"KLD p95: {overall_kld_p95:.6f}")
