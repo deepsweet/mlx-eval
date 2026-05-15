@@ -121,6 +121,15 @@ oQ3 and oQ3.5 having the same KLD mean is not a typo – I've carefully checked 
 | UD3   | 0.071945 | 0.225586 | 0.707031 | 5.943074 | +0.151827 | 0.623253 | -0.004784 | 15.35 |
 | UD4   | 0.029251 | 0.114746 | 0.241211 | 5.785594 | -0.005653 | 0.627831 | -0.000206 | 19.32 |
 
+### JANG
+
+- ["Jang Adaptive N-bit Grading"](https://github.com/jjang-ai/jangq)
+- https://huggingface.co/JANGQ-AI/Qwen3.6-35B-A3B-JANGTQ4
+
+| Quant |      KLD |  KLD p95 |  KLD p99 |      PPL |     Δ PPL |    Acc@1 |   Δ Acc@1 |   RAM | 
+|-------|---------:|---------:|---------:|---------:|----------:|---------:|----------:|------:|
+| JTQ4  | 0.034605 | 0.092919 | 0.265739 | 5.887115 | +0.095868 | 0.625862 | -0.002175 | 17.50 |
+
 ## Qwen3.6-27B
 
 This is a work-in-progress evaluation, I’ll add more quants over time:

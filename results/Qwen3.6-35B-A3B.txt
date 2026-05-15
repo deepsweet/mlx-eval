@@ -2421,3 +2421,185 @@ PPL: 5.785594
 Acc@1: 0.627831
 Δ Acc@1: -0.000206
 RAM: 19.32
+
+
+
+$ uv run mlx_eval.compare Qwen3.6-35B-A3B-JANGTQ4 16
+
+Loading JANGTQ: Qwen3.6-35B-A3B-JANGTQ4
+  seed=42, bits_map={'attention': 8, 'linear_attention': 8, 'shared_expert': 8, 'routed_expert': 4, 'embed_tokens': 8, 'lm_head': 8}
+  19 shards
+  TQ groups: 120, regular: 1570
+  Expert groups to stack: 0, pre-stacked: 120
+  After stacking: 120 TQ groups
+  Replacing modules with TurboQuantLinear...
+  Replaced 120 modules
+  Patched SwitchGLU class for fused gate+up (40 TQ instances)
+  P15 skipped: No module named 'jang_tools.turboquant.router_kernel'
+  P18 QKV fusion: 0 class(es), 0 instances
+  [hydrate] inference mode enabled
+  Hydration complete
+  [load_jangtq] merged eos_token_id from generation_config.json: +[248046, 248044] → [248046, 248044]
+  [warmup] layer-by-layer 1-token forward (40 layers, H=2048) ...
+    layer 0/39 compiled  (1.8s)
+    layer 10/39 compiled  (1.9s)
+    layer 20/39 compiled  (1.9s)
+    layer 30/39 compiled  (2.0s)
+    layer 39/39 compiled  (2.0s)
+  [warmup] full-model 16-token prefill shape ...
+    ok  (0.1s)
+  [warmup] done in 2.1s (Metal kernels now JIT-cached)
+  Done (eos_token_ids=[248046, 248044])
+
+Processing window 1/16
+KLD: 0.022256
+KLD p95: 0.088083
+KLD p99: 0.180697
+PPL: 6.089955
+Δ PPL: +0.011883
+Acc@1: 0.621780
+Δ Acc@1: +0.000122
+
+Processing window 2/16
+KLD: 0.019382
+KLD p95: 0.084331
+KLD p99: 0.187555
+PPL: 5.960511
+Δ PPL: +0.069442
+Acc@1: 0.634477
+Δ Acc@1: +0.000488
+
+Processing window 3/16
+KLD: 0.026777
+KLD p95: 0.101490
+KLD p99: 0.247646
+PPL: 7.683403
+Δ PPL: +0.059793
+Acc@1: 0.570870
+Δ Acc@1: -0.006104
+
+Processing window 4/16
+KLD: 0.145732
+KLD p95: 0.162313
+KLD p99: 2.909909
+PPL: 5.138282
+Δ PPL: +0.478063
+Acc@1: 0.667440
+Δ Acc@1: -0.011720
+
+Processing window 5/16
+KLD: 0.027764
+KLD p95: 0.092579
+KLD p99: 0.208614
+PPL: 8.689448
+Δ PPL: +0.184696
+Acc@1: 0.561836
+Δ Acc@1: -0.004639
+
+Processing window 6/16
+KLD: 0.063342
+KLD p95: 0.123622
+KLD p99: 1.089369
+PPL: 3.569626
+Δ PPL: -0.059756
+Acc@1: 0.716152
+Δ Acc@1: +0.005494
+
+Processing window 7/16
+KLD: 0.016718
+KLD p95: 0.078651
+KLD p99: 0.174752
+PPL: 4.761424
+Δ PPL: +0.027818
+Acc@1: 0.640215
+Δ Acc@1: -0.001221
+
+Processing window 8/16
+KLD: 0.024251
+KLD p95: 0.091608
+KLD p99: 0.219223
+PPL: 5.311753
+Δ PPL: +0.031033
+Acc@1: 0.641802
+Δ Acc@1: -0.001099
+
+Processing window 9/16
+KLD: 0.037074
+KLD p95: 0.102503
+KLD p99: 0.347397
+PPL: 5.737768
+Δ PPL: +0.116471
+Acc@1: 0.631058
+Δ Acc@1: -0.005860
+
+Processing window 10/16
+KLD: 0.021595
+KLD p95: 0.086505
+KLD p99: 0.191369
+PPL: 5.715399
+Δ PPL: +0.094101
+Acc@1: 0.634965
+Δ Acc@1: -0.003418
+
+Processing window 11/16
+KLD: 0.022075
+KLD p95: 0.085837
+KLD p99: 0.205872
+PPL: 6.375988
+Δ PPL: +0.055793
+Acc@1: 0.606641
+Δ Acc@1: -0.001831
+
+Processing window 12/16
+KLD: 0.022572
+KLD p95: 0.089724
+KLD p99: 0.212554
+PPL: 5.322137
+Δ PPL: +0.082512
+Acc@1: 0.636674
+Δ Acc@1: -0.002075
+
+Processing window 13/16
+KLD: 0.025648
+KLD p95: 0.085819
+KLD p99: 0.209309
+PPL: 5.555807
+Δ PPL: +0.064727
+Acc@1: 0.638750
+Δ Acc@1: -0.000244
+
+Processing window 14/16
+KLD: 0.028483
+KLD p95: 0.092632
+KLD p99: 0.217067
+PPL: 6.228288
+Δ PPL: +0.197517
+Acc@1: 0.620681
+Δ Acc@1: -0.002564
+
+Processing window 15/16
+KLD: 0.027488
+KLD p95: 0.094776
+KLD p99: 0.229215
+PPL: 6.457449
+Δ PPL: +0.087685
+Acc@1: 0.613478
+Δ Acc@1: -0.000122
+
+Processing window 16/16
+KLD: 0.022515
+KLD p95: 0.085876
+KLD p99: 0.194807
+PPL: 7.447009
+Δ PPL: +0.057953
+Acc@1: 0.576975
+Δ Acc@1: +0.000000
+
+KLD: 0.034605
+KLD p95: 0.092919
+KLD p99: 0.265739
+PPL: 5.887115
+Δ PPL: +0.095868
+Acc@1: 0.625862
+Δ Acc@1: -0.002175
+RAM: 17.50

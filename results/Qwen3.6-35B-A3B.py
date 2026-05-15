@@ -34,6 +34,13 @@ datasets = [
             {"label": "UD4", "kld": 0.029251, "ram": 19.32},
         ],
     },
+    {
+        "name": "JANG",
+        "color": "#8c6bb1",
+        "data": [
+            {"label": "JTQ4", "kld": 0.034605, "ram": 17.50},
+        ],
+    },
 ]
 
 x_min = 10
