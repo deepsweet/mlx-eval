@@ -9,7 +9,7 @@ datasets = [
             {"label": "Q3", "kld": 0.285767, "ram": 14.14},
             {"label": "Q4", "kld": 0.088287, "ram": 18.17},
             {"label": "Q5", "kld": 0.037971, "ram": 22.20},
-            {"label": "Q6", "kld": 0.021137, "ram": 26.23, "pos": "top left"},
+            {"label": "Q6", "kld": 0.021137, "ram": 26.23, "pos": "top left", "x": -0.15},
             {"label": "Q8", "kld": 0.013805, "ram": 34.30, "pos": "top left", "x": -0.15},
         ],
     },
@@ -39,7 +39,7 @@ datasets = [
         "color": "#8c6bb1",
         "data": [
             {"label": "JTQ2", "kld": 0.240434, "ram": 10.00},
-            {"label": "JTQ4", "kld": 0.034605, "ram": 17.50},
+            {"label": "JTQ4", "kld": 0.034605, "ram": 17.50, "pos": "top left", "x": -0.15},
         ],
     },
 ]
