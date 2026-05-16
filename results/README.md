@@ -87,12 +87,7 @@ Active memory allocated for the model's *text-only* weights, in GiB. Loading the
 - ["oQ: oMLX Universal Dynamic Quantization"](https://github.com/jundot/omlx/blob/main/docs/oQ_Quantization.md)
 - https://huggingface.co/collections/deepsweet/qwen36-35b-a3b
 - tool: [oMLX](https://github.com/jundot/omlx) v0.3.6
-- sensitivity model:
-  - tool: [mlx-vlm](https://github.com/Blaizzy/mlx-vlm) v0.4.4
-  - quantization: Q8
-  - mode: affine
-  - group size: default, omitted
-  - data type: bfloat16
+- sensitivity model: Q8
 - text-only: no
 - data type: bfloat16
 
@@ -163,24 +158,23 @@ This is a work-in-progress evaluation, I’ll add more quants over time:
 - group size: default, omitted
 - data type: bfloat16
 
-| Quant |      KLD |  KLD p95 |   KLD p99 |        PPL |      Δ PPL |    Acc@1 |   Δ Acc@1 |   RAM | 
-|-------|---------:|---------:|----------:|-----------:|-----------:|---------:|----------:|------:|
-| Q4    | 0.299316 | 0.369141 | 10.375000 |   7.873294 |  -0.931470 | 0.600926 | +0.005219 | 14.09 |
-| Q5    | 0.203751 | 0.167969 |  6.718750 |   8.143076 |  -0.661688 | 0.600881 | +0.005173 | 17.23 |
-| Q6    | 0.115662 | 0.105469 |  2.156250 |   8.965280 |  +0.160517 | 0.594303 | -0.001404 | 20.36 |
-| Q8    | 0.057327 | 0.082031 |  0.396484 |   8.856506 |  +0.051742 | 0.595753 | +0.000046 | 26.62 |
+| Quant |      KLD |  KLD p95 |   KLD p99 |       PPL |      Δ PPL |    Acc@1 |   Δ Acc@1 |   RAM | 
+|-------|---------:|---------:|----------:|----------:|-----------:|---------:|----------:|------:|
+| Q2*   | 2.200684 | 6.531250 | 14.625000 | 29.167261 | +20.362497 | 0.392977 | -0.202730 |  7.83 |
+| Q3    | 0.603271 | 1.695312 | 15.312500 |  9.952777 |  +1.148013 | 0.576937 | -0.018771 | 10.96 |
+| Q4    | 0.299316 | 0.369141 | 10.375000 |  7.873294 |  -0.931470 | 0.600926 | +0.005219 | 14.09 |
+| Q5    | 0.203751 | 0.167969 |  6.718750 |  8.143076 |  -0.661688 | 0.600881 | +0.005173 | 17.23 |
+| Q6    | 0.115662 | 0.105469 |  2.156250 |  8.965280 |  +0.160517 | 0.594303 | -0.001404 | 20.36 |
+| Q8    | 0.057327 | 0.082031 |  0.396484 |  8.856506 |  +0.051742 | 0.595753 | +0.000046 | 26.62 |
+
+<sup>*Q2 is off the chart</sup>
 
 ### oQ
 
 - ["oQ: oMLX Universal Dynamic Quantization"](https://github.com/jundot/omlx/blob/main/docs/oQ_Quantization.md)
 - https://huggingface.co/collections/deepsweet/qwen36-27b
 - tool: [oMLX](https://github.com/jundot/omlx) v0.3.8
-- sensitivity model:
-  - tool: [mlx-vlm](https://github.com/Blaizzy/mlx-vlm) v0.4.4
-  - quantization: Q8
-  - mode: affine
-  - group size: default, omitted
-  - data type: bfloat16
+- sensitivity model: Q8
 - text-only: no
 - data type: bfloat16
 

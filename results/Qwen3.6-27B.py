@@ -5,6 +5,8 @@ datasets = [
         "name": "Q",
         "color": "#dd8452",
         "data": [
+            # {"label": "Q2", "kld": 2.200684, "ram": 7.83},
+            {"label": "Q3", "kld": 0.603271, "ram": 10.96},
             {"label": "Q4", "kld": 0.299316, "ram": 14.09},
             {"label": "Q5", "kld": 0.203751, "ram": 17.23, "pos": "top left", "x": -0.15},
             {"label": "Q6", "kld": 0.115662, "ram": 20.36, "pos": "top left", "x": -0.15},
