@@ -56,8 +56,8 @@ default_text_x = 0.0
 default_text_y = 0.0025
 color_text = "#000000"
 color_border = "#000000"
-color_grid_major = "#d3d3d3"
-color_grid_minor = "#f5f5f5"
+color_grid_major = "#e5e5e5"
+color_grid_minor = "#f0f0f0"
 
 fig = plotly.graph_objects.Figure()
 
