@@ -26,6 +26,7 @@ datasets = [
         "name": "UD",
         "color": "#55a868",
         "data": [
+            {"label": "UD3", "kld": 0.315521, "ram": 21.54},
             {"label": "UD4", "kld": 0.168304, "ram": 23.53},
         ],
     },
