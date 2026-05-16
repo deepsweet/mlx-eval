@@ -17,7 +17,7 @@ datasets = [
         "name": "oQ",
         "color": "#4c72b0",
         "data": [
-            # {"label": "oQ2", "kld": 0.318237, "ram": 11.40},
+            {"label": "oQ2", "kld": 0.318237, "ram": 11.40},
             {"label": "oQ3", "kld": 0.216858, "ram": 14.77, "pos": "top left", "x": -0.15},
             {"label": "oQ3.5", "kld": 0.216858, "ram": 16.00},
             {"label": "oQ4", "kld": 0.047134, "ram": 18.83},
@@ -38,15 +38,16 @@ datasets = [
         "name": "JANG",
         "color": "#8c6bb1",
         "data": [
+            {"label": "JTQ2", "kld": 0.240434, "ram": 10.00},
             {"label": "JTQ4", "kld": 0.034605, "ram": 17.50},
         ],
     },
 ]
 
-x_min = 10
+x_min = 5
 x_max = 40
 y_min = 0
-y_max = 0.3
+y_max = 0.35
 x_step_fixed = 5
 y_step_fixed = 0.05
 num_intervals = 5

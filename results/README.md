@@ -98,15 +98,13 @@ Active memory allocated for the model's *text-only* weights, in GiB. Loading the
 
 | Quant |      KLD |  KLD p95 |  KLD p99 |      PPL |     Δ PPL |    Acc@1 |   Δ Acc@1 |   RAM | 
 |-------|---------:|---------:|---------:|---------:|----------:|---------:|----------:|------:|
-| oQ2*  | 0.318237 | 1.195312 | 3.015625 | 6.807117 | +1.015871 | 0.598759 | -0.029278 | 11.40 |
+| oQ2   | 0.318237 | 1.195312 | 3.015625 | 6.807117 | +1.015871 | 0.598759 | -0.029278 | 11.40 |
 | oQ3   | 0.216858 | 0.750000 | 2.031250 | 6.584811 | +0.793564 | 0.606886 | -0.021151 | 14.77 |
 | oQ3.5 | 0.216858 | 0.738281 | 2.046875 | 6.517636 | +0.726389 | 0.608541 | -0.019495 | 16.00 |
 | oQ4   | 0.047134 | 0.150391 | 0.419922 | 5.885319 | +0.094072 | 0.625557 | -0.002480 | 18.83 |
 | oQ5   | 0.023533 | 0.103027 | 0.181641 | 5.830971 | +0.039724 | 0.627327 | -0.000710 | 22.76 |
 | oQ6   | 0.019783 | 0.098145 | 0.150391 | 5.819594 | +0.028347 | 0.627487 | -0.000549 | 26.51 |
 | oQ8   | 0.014273 | 0.087402 | 0.127217 | 5.768669 | -0.022578 | 0.628464 | +0.000427 | 34.27 |
-
-<sup>*oQ2 is off the chart</sup>
 
 oQ3 and oQ3.5 having the same KLD mean is not a typo – I've carefully checked the per‑window [logs](./Qwen3.6-35B-A3B.txt), and they are mostly slightly different in favor of oQ3.5, but the overall results are identical as a statistical coincidence.
 
@@ -124,10 +122,12 @@ oQ3 and oQ3.5 having the same KLD mean is not a typo – I've carefully checked 
 ### JANG
 
 - ["Jang Adaptive N-bit Grading"](https://github.com/jjang-ai/jangq)
+- https://huggingface.co/JANGQ-AI/Qwen3.6-35B-A3B-JANGTQ
 - https://huggingface.co/JANGQ-AI/Qwen3.6-35B-A3B-JANGTQ4
 
 | Quant |      KLD |  KLD p95 |  KLD p99 |      PPL |     Δ PPL |    Acc@1 |   Δ Acc@1 |   RAM | 
 |-------|---------:|---------:|---------:|---------:|----------:|---------:|----------:|------:|
+| JTQ2  | 0.240434 | 0.881868 | 2.287562 | 6.377156 | +0.585909 | 0.611136 | -0.016901 | 10.00 |
 | JTQ4  | 0.034605 | 0.092919 | 0.265739 | 5.887115 | +0.095868 | 0.625862 | -0.002175 | 17.50 |
 
 ## Qwen3.6-27B
