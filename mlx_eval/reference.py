@@ -6,7 +6,6 @@ import sys
 import mlx.core
 import mlx_lm
 
-from . import const
 from . import utils
 
 
@@ -39,7 +38,8 @@ def main():
 
     mlx.core.clear_cache()
 
-    prompt_text = pathlib.Path(const.PROMPT_PATH).read_text(encoding="utf-8")
+    script_dir = pathlib.Path(__file__).parent
+    prompt_text = (script_dir / "prompt.txt").read_text(encoding="utf-8")
     tokenizer = mlx_lm.utils.load_tokenizer(model_path)
     total_tokens = max_tokens * window_count
 

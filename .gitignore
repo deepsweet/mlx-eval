@@ -2,7 +2,6 @@ __pycache__/
 .ruff_cache/
 .venv/
 outputs/
-prompt.txt
 *.egg
 *.egg-info/
 *.npy

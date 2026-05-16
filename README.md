@@ -16,23 +16,28 @@ cd mlx-eval/
 # install dependencies
 uv sync
 
-# download an original reference model and convert it into MLX
-# either text-only using mlx-lm, or multimodal using mlx-vlm
+# prepare an original reference MLX model 
+# fof example, text-only using mlx-lm, or multimodal using mlx-vlm:
 uv tool install mlx-vlm --with torchvision
 mlx_vlm.convert \
   --hf-path Qwen/Qwen3.6-35B-A3B \
   --mlx-path /path/to/Qwen3.6-35B-A3B-MLX
 
-# prepare a diverse prompt, Aes Sedai's "combined_all_micro" would suffice
-curl -L "https://huggingface.co/AesSedai/GLM-4.5-GGUF/raw/b077c76836c67a4b164d69331ac110ecc36bbc1f/combined_all_micro.txt" > prompt.txt
+# prepare a quantized target MLX model
+# for example:
+mlx_vlm.convert \
+  --hf-path Qwen/Qwen3.6-35B-A3B \
+  --mlx-path /path/to/Qwen3.6-35B-A3B-MLX-Q4 \
+  --quantize \
+  --q-bits 4
 
-# compute and store reference model data into outputs/
+# compute and store the reference model data into outputs/
 # mlx_eval.reference <reference_model_path> <window_count> <max_tokens>
 uv run mlx_eval.reference /path/to/Qwen3.6-35B-A3B-MLX 16 8192
 
-# and compare a target quantized model against it
+# and compare the target quantized model against it
 # mlx_eval.compare <target_model_path> <window_count>
-uv run mlx_eval.compare /path/to/Qwen3.6-35B-A3B-MLX-oQ8 16
+uv run mlx_eval.compare /path/to/Qwen3.6-35B-A3B-MLX-Q4 16
 ```
 
 ## Generate chart
@@ -48,3 +53,10 @@ uv sync --group dev
 uv run ruff check .
 uv run pytest .
 ```
+
+## License
+
+MIT.
+
+The evaluation prompt is derived from [Aes Sedai](https://huggingface.co/AesSedai)'s
+`combined_all_micro.txt`.
