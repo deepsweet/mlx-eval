@@ -4,6 +4,7 @@ version = "0.0.0"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "coloraide>=8.8.1",
     "jang[mlx]>=2.5.29",
     "kaleido>=1.2.0",
     "mlx>=0.31.2",
@@ -95,6 +96,8 @@ ignore = [
   "PLR0914",
   # too-many-statements
   "PLR0915",
+  # too-many-positional-arguments
+  "PLR0917",
   # unnecessary-assign
   "RET504",
   # import-outside-top-level

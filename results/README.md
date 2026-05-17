@@ -134,6 +134,15 @@ oQ3 and oQ3.5 having the same KLD mean is not a typo – I've carefully checked 
 | JTQ2  | 0.240434 | 0.881868 | 2.287562 | 6.377156 | +0.585909 | 0.611136 | -0.016901 | 10.00 |
 | JTQ4  | 0.034605 | 0.092919 | 0.265739 | 5.887115 | +0.095868 | 0.625862 | -0.002175 | 17.50 |
 
+### OptiQ
+
+- ["Quantize, fine-tune and serve LLMs entirely on Apple Silicon"](https://mlx-optiq.com/)
+- https://huggingface.co/mlx-community/Qwen3.6-35B-A3B-OptiQ-4bit
+
+| Quant |      KLD |  KLD p95 |  KLD p99 |      PPL |     Δ PPL |    Acc@1 |   Δ Acc@1 |   RAM | 
+|-------|---------:|---------:|---------:|---------:|----------:|---------:|----------:|------:|
+| OptiQ | 0.028477 | 0.113770 | 0.236328 | 5.785594 | -0.005653 | 0.627426 | -0.000610 | 19.67 |
+
 ## Qwen3.6-27B
 
 This is a work-in-progress evaluation, I’ll add more quants over time:
