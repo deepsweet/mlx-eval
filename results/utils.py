@@ -13,7 +13,7 @@ def get_palette():
 
     for i, name in enumerate(COLOR_NAMES):
         h = (i * COLOR_STEP + COLOR_H_OFFSET) % 360
-        color = coloraide.Color(f"oklch({COLOR_L} {COLOR_C} {h})")
+        color = coloraide.Color("oklch", [COLOR_L, COLOR_C, h])
 
         if not color.in_gamut("srgb"):
             raise ValueError(f"Color '{name}' is out of sRGB gamut")
