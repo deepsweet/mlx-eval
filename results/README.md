@@ -214,6 +214,10 @@ This is a work-in-progress evaluation, I’ll add more quants over time:
 | UD3   | 0.315521 | 0.570312 | 9.687500 | 8.554730 | -0.250034 | 0.592823 | -0.002884 | 21.54 |
 | UD4   | 0.168304 | 0.159180 | 4.477188 | 8.255171 | -0.549592 | 0.599179 | +0.003472 | 23.53 |
 
+Unsloth UD-MLX quants are really *that off* for this particular dense model, unlike the MoE one above where it shines. It's not a measurement mistake – it all starts with the noticeably large model's disk size.
+
+>Our MLX quant algorithm is still evolving, and we’re actively refining it wherever improvements can be made.
+
 ### PARO
 
 - ["ParoQuant: Pairwise Rotation Quantization for Efficient Reasoning LLM Inference"](https://github.com/z-lab/paroquant)
