@@ -30,6 +30,8 @@ PLOT_MARGIN_BOTTOM = 70
 PLOT_MARGIN_LEFT = 90
 PLOT_MARGIN_RIGHT = 30
 PLOT_DEFAULT_TEXT_POS = "top right"
+PLOT_SIZE_TEXT = 13
+PLOT_SIZE_MARKER = 8
 PLOT_COLOR_TEXT = "#000000"
 PLOT_COLOR_BORDER = "#000000"
 PLOT_COLOR_GRID_MAJOR = "#e5e5e5"
@@ -86,7 +88,7 @@ def render_chart(
             y=kld,
             mode="markers",
             name=f"{key}_marker",
-            marker={"color": color, "size": 8},
+            marker={"color": color, "size": PLOT_SIZE_MARKER},
         )
         fig.add_trace(marker)
 
@@ -97,7 +99,7 @@ def render_chart(
             name=f"{key}_label",
             text=label,
             textposition=label_pos,
-            textfont={"color": color, "size": 13},
+            textfont={"color": color, "size": PLOT_SIZE_TEXT},
         )
         fig.add_trace(label)
 
