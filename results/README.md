@@ -114,6 +114,15 @@ oQ3 and oQ3.5 having the same KLD mean is not a typo – I've carefully checked 
 | UD3   | 0.071945 | 0.225586 | 0.707031 | 5.943074 | +0.151827 | 0.623253 | -0.004784 | 15.35 |
 | UD4   | 0.029251 | 0.114746 | 0.241211 | 5.785594 | -0.005653 | 0.627831 | -0.000206 | 19.32 |
 
+### PARO
+
+- ["ParoQuant: Pairwise Rotation Quantization for Efficient Reasoning LLM Inference"](https://github.com/z-lab/paroquant)
+- https://huggingface.co/z-lab/Qwen3.6-35B-A3B-PARO
+
+| Quant |      KLD |  KLD p95 |  KLD p99 |      PPL |     Δ PPL |    Acc@1 |   Δ Acc@1 |   RAM | 
+|-------|---------:|---------:|---------:|---------:|----------:|---------:|----------:|------:|
+| PARO  | 0.059202 | 0.154329 | 0.428675 | 5.867386 | +0.076139 | 0.626084 | -0.001953 | 17.37 |
+
 ### JANG
 
 - ["Jang Adaptive N-bit Grading"](https://github.com/jjang-ai/jangq)

@@ -35,8 +35,15 @@ datasets = [
         ],
     },
     {
-        "name": "JANG",
+        "name": "PARO",
         "color": "#8c6bb1",
+        "data": [
+            {"label": "PARO", "kld": 0.059202, "ram": 17.37},
+        ],
+    },
+    {
+        "name": "JANG",
+        "color": "#3b9b9e",
         "data": [
             {"label": "JTQ2", "kld": 0.240434, "ram": 10.00},
             {"label": "JTQ4", "kld": 0.034605, "ram": 17.50, "pos": "top left", "x": -0.15},
