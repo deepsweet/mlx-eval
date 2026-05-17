@@ -17,6 +17,7 @@ datasets = [
         "name": "oQ",
         "color": "#4c72b0",
         "data": [
+            {"label": "oQ3.5", "kld": 0.576782, "ram": 12.70},
             {"label": "oQ4", "kld": 0.275848, "ram": 14.72},
             {"label": "oQ5", "kld": 0.200607, "ram": 17.69},
             {"label": "oQ6", "kld": 0.118469, "ram": 20.65},
