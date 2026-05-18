@@ -226,3 +226,12 @@ Unsloth UD-MLX quants are really *that off* for this particular dense model, unl
 | Quant |      KLD |  KLD p95 |  KLD p99 |      PPL |     Δ PPL |    Acc@1 |   Δ Acc@1 |   RAM | 
 |-------|---------:|---------:|---------:|---------:|----------:|---------:|----------:|------:|
 | PARO  | 0.235654 | 0.246749 | 7.366954 | 8.461260 | -0.343504 | 0.596165 | +0.000458 | 13.42 |
+
+### OptiQ
+
+- ["Quantize, fine-tune and serve LLMs entirely on Apple Silicon"](https://mlx-optiq.com/)
+- https://huggingface.co/mlx-community/Qwen3.6-27B-OptiQ-4bit
+
+| Quant |      KLD |  KLD p95 |  KLD p99 |      PPL |     Δ PPL |    Acc@1 |   Δ Acc@1 |   RAM | 
+|-------|---------:|---------:|---------:|---------:|----------:|---------:|----------:|------:|
+| OptiQ | 0.277649 | 0.310547 | 9.687500 | 7.494431 | -1.310333 | 0.605604 | +0.009897 | 15.34 |

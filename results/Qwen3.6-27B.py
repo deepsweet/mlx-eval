@@ -40,6 +40,13 @@ datasets = [
             {"label": "PARO", "kld": 0.235654, "ram": 13.42},
         ],
     },
+    {
+        "key": "OptiQ",
+        "color": palette["red"],
+        "data": [
+            {"label": "OptiQ", "kld": 0.277649, "ram": 15.34, "pos": "bottom right"},
+        ],
+    },
 ]
 
 utils.render_chart(
