@@ -2,7 +2,7 @@ import coloraide
 import plotly.graph_objects
 
 COLOR_L = 0.65
-COLOR_C = 0.11
+COLOR_C = 0.111
 COLOR_H_OFFSET = 0
 COLOR_NAMES = ["red", "orange", "yellow", "green", "cyan", "blue", "purple"]
 COLOR_STEP = 360 / len(COLOR_NAMES)
