@@ -123,6 +123,8 @@ oQ3 and oQ3.5 having the same KLD mean is not a typo – I've carefully checked 
 |-------|---------:|---------:|---------:|---------:|----------:|---------:|----------:|------:|
 | PARO  | 0.059202 | 0.154329 | 0.428675 | 5.867386 | +0.076139 | 0.626084 | -0.001953 | 17.37 |
 
+ParoQuant RAM usage is smaller than the model's disk size. See [this comment](https://github.com/jundot/omlx/pull/209#issuecomment-4452842993): they store `lm_head` and `embed_tokens` unquantized, but then quantize it into Q4 in runtime "on the fly" via their loader.
+
 ### JANG
 
 - ["Jang Adaptive N-bit Grading"](https://github.com/jjang-ai/jangq)
@@ -229,6 +231,8 @@ Unsloth UD-MLX quants are really *that off* for this particular dense model, unl
 | Quant |      KLD |  KLD p95 |  KLD p99 |      PPL |     Δ PPL |    Acc@1 |   Δ Acc@1 |   RAM | 
 |-------|---------:|---------:|---------:|---------:|----------:|---------:|----------:|------:|
 | PARO  | 0.235654 | 0.246749 | 7.366954 | 8.461260 | -0.343504 | 0.596165 | +0.000458 | 13.42 |
+
+ParoQuant RAM usage is smaller than the model's disk size. See [this comment](https://github.com/jundot/omlx/pull/209#issuecomment-4452842993): they store `lm_head` and `embed_tokens` unquantized, but then quantize it into Q4 in runtime "on the fly" via their loader.
 
 ### OptiQ
 
